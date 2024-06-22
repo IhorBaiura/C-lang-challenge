@@ -14,8 +14,7 @@
 float transformFahrToCelsius(float fahr) { return 5.0 * (fahr - 32.0) / 9.0; }
 
 int main(int argc, char *argv[]) {
-  float fahr, celsius;
-  int lower, upper, step;
+  float fahr;
 
   printf("Fahrenheit | Celsius\n");
   printf("____________________\n");
