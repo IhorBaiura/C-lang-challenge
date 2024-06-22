@@ -19,10 +19,13 @@ int main(int argc, char *argv[]) {
   upper = 300;
   step = 20;
 
+  printf("Fahrenheit | Celsius\n");
+  printf("____________________\n");
+
   fahr = lower;
   while (fahr <= upper) {
     celsius = transformFahrToCelsius(fahr);
-    printf("%3.0f :F -|- C: %6.1f\n", fahr, celsius);
+    printf("%10.0f | %7.1f\n", fahr, celsius);
     fahr = fahr + step;
   }
 }
