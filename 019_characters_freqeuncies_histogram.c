@@ -1,6 +1,25 @@
 /*
  * Exercise 1-14. Write a program to print a histogram of the frequencies of
  * differen characters in its input.
+ *
+ * expectation:
+ *
+ *  > if (i == '\n' || i == '\t' || i == ' ')
+ *
+ *          -
+ *          -
+ *          -
+ *          -
+ *          -
+ *          -
+ *          -  -        -
+ *          -  -        -
+ *          -  -        -        -        -
+ *          -  -        -        -        -
+ *          -  -        -  -     -        -
+ *      -   -  -  -  -  -  -  -  -  -  -  -
+ *     \n  \_  '  (  )  =  \  f  i  n  t  |
+ *
  */
 
 #include <stdio.h>
