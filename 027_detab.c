@@ -3,6 +3,10 @@
  * the proper number of blanks to space to the next tab stop. Assume a fixed set
  * of tab stops, say every n columns. Should n be a variable or a symbolic
  * parameter?
+ *
+ * Example:
+ * Input String:  "pie\tcows\tand\tapple"
+ * Output String: "pie*****cows****and*****apple"
  */
 
 #include <stdio.h>
@@ -43,7 +47,7 @@ int get_line(char s[], int lim) {
 }
 
 void detab(char s[], int lim) {
-  int i, j, count, space;
+  int i, count, space;
   char tmp[lim];
 
   for (count = i = 0; (s[i] != '\0' || s[i] != '\n') && count < lim - 1; i++)
