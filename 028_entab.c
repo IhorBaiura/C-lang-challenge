@@ -5,8 +5,8 @@
  * reach a tab stop, which should be given preference?
  *
  * Example:
- * Input string:  "apple banana pear"
- * Output string: "\tapple\tbanana\t\t\tpear"
+ * Input string:  a__________________a
+ * Output string: a\t\t___a
  */
 
 #include <stdio.h>
@@ -46,26 +46,35 @@ int get_line(char s[], int lim) {
 
 void entab(char s[], int lim) {
   char tmp[lim];
-  int i, j, spaces;
+  int i, j, spaces, pos;
 
   //
   // a__________________a
   // |a_______|________|___a
   // a\t\t___a
   //
+  //
+  //
+  // a_____\t___________a
+  // |a_____\t|________|___a
+  // a\t\t___a
+  //
 
-  for (i = j = spaces = 0; s[i] != '\0' && s[i] != '\n' && i < lim - 1; i++) {
+  for (i = j = spaces = 0, pos = 1; s[i] != '\0' && s[i] != '\n' && i < lim - 1;
+       i++, pos++) {
     if (s[i] == ' ') {
       spaces++;
-      if ((i + 1) % TAB == 0) {
+      if (pos % TAB == 0) {
         tmp[j++] = '\t';
         spaces = 0;
       }
     } else {
-      while (spaces > 0) {
-        tmp[j++] = ' ';
-        spaces--;
+      if (s[i] == '\t') {
+        spaces = 0;
+        pos = 1;
       }
+      for (; spaces > 0; spaces--)
+        tmp[j++] = ' ';
       tmp[j++] = s[i];
     }
   }
@@ -75,14 +84,11 @@ void entab(char s[], int lim) {
 
   tmp[j] = '\0';
 
-  //
-  // for (i = 0; i <= j; s[i] = tmp[i], i++)
-  //   print_esc(s[i]);
-  //
-  //
+  for (i = 0; i <= j; s[i] = tmp[i], i++)
+    ;
 
-  for (i = 0; tmp[i] != '\0'; i++)
-    print_esc(tmp[i]);
+  for (i = 0; s[i] != '\0'; i++)
+    print_esc(s[i]);
 }
 
 void print_esc(char c) {
