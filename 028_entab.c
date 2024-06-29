@@ -16,13 +16,14 @@
 
 int get_line(char s[], int lim);
 void entab(char s[], int lim);
+void print_esc(char c);
 
 int main(int argc, char *argv[]) {
   char line[MAXLINE];
 
   while (get_line(line, MAXLINE) > 0) {
     entab(line, MAXLINE);
-    printf("%s", line);
+    // printf("%s", line);
   }
 
   return 0;
@@ -35,10 +36,8 @@ int get_line(char s[], int lim) {
   for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; i++)
     s[i] = c;
 
-  if (c == '\n') {
-    s[i] = c;
-    ++i;
-  }
+  if (c == '\n')
+    s[i++] = c;
 
   s[i] = '\0';
 
@@ -49,7 +48,13 @@ void entab(char s[], int lim) {
   char tmp[lim];
   int i, j, spaces;
 
-  for (i = 0, j = 0; (s[i] != '\n' || s[i] != '\0') && i < lim - 1; i++) {
+  //
+  // a__________________a
+  // |a_______|________|___a
+  // a\t\t___a
+  //
+
+  for (i = j = spaces = 0; s[i] != '\0' && s[i] != '\n' && i < lim - 1; i++) {
     if (s[i] == ' ') {
       spaces++;
       if ((i + 1) % TAB == 0) {
@@ -57,17 +62,27 @@ void entab(char s[], int lim) {
         spaces = 0;
       }
     } else {
-      for (; spaces > 0; spaces--)
+      while (spaces > 0) {
         tmp[j++] = ' ';
+        spaces--;
+      }
       tmp[j++] = s[i];
     }
   }
 
-  printf("i = %d; j = %d\n", i, j);
+  if (s[i] == '\n')
+    tmp[j++] = s[i];
 
   tmp[j] = '\0';
-  for (i = 0; i < j; s[i] = tmp[i], i++)
-    ;
+
+  //
+  // for (i = 0; i <= j; s[i] = tmp[i], i++)
+  //   print_esc(s[i]);
+  //
+  //
+
+  for (i = 0; tmp[i] != '\0'; i++)
+    print_esc(tmp[i]);
 }
 
 void print_esc(char c) {
@@ -77,8 +92,15 @@ void print_esc(char c) {
   } else if (c == '\b') {
     putchar('\\');
     putchar('b');
+  } else if (c == '\n') {
+    putchar('\\');
+    putchar('n');
   } else if (c == '\\') {
     putchar('\\');
     putchar('\\');
+  } else if (c == ' ') {
+    putchar('_');
+  } else {
+    putchar(c);
   }
 }
