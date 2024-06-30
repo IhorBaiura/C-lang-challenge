@@ -71,7 +71,7 @@ void entab(char s[], int lim) {
     } else {
       if (s[i] == '\t') {
         spaces = 0;
-        pos = 1;
+        pos = 0;
       }
       for (; spaces > 0; spaces--)
         tmp[j++] = ' ';
