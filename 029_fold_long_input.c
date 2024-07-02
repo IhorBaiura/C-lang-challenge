@@ -18,7 +18,7 @@
 #include <stdio.h>
 
 #define LINE_LENGTH 1000
-#define ROW 80
+#define ROW 10
 #define TAB 8
 
 int get_line(char s[], int lim);
@@ -52,13 +52,14 @@ int get_line(char s[], int lim) {
 }
 
 void fold(char s[], int lim) {
-  int i, j, pos, word_size, blank_pos;
+  int i, j, pos, blank_pos, has_word;
   char acc[lim];
 
   /*
    *    ROW 10
    *
    *  1   aasd_sdf_afd___\t__adslkfj___ajlfa_fa_\t___kalfj
+   *      aasd sdf afd      adslkfj   ajlfa fa     kalfj
    *
    *  1   aasd_sdf\n
    *  2   afd\n
@@ -67,55 +68,46 @@ void fold(char s[], int lim) {
    *  5   kalfj\0
    */
 
-  word_size = j = 0;
+  j = has_word = 0;
   pos = 1;
   blank_pos = -1;
   for (i = 0; s[i] != '\0' && s[i] != '\n' && i < lim - 1; i++) {
-    acc[j] = s[i];
+    acc[j++] = s[i];
 
     if ((s[i] == ' ' || s[i] == '\t') && blank_pos < 0)
-      blank_pos = j;
+      blank_pos = j - 1;
 
     if (s[i] == '\t')
       pos += TAB - (pos % TAB);
-
-    if (s[i] == ' ')
+    else if (s[i] == ' ')
       pos++;
+    else {
+      if (blank_pos >= 0 && has_word == 0) {
+        j = blank_pos;
+        blank_pos = -1;
+        pos = 0;
+      }
 
-    if (pos >= ROW)
-      ;
+      pos++;
+      has_word = 1;
+    }
 
-    // if (s[i] == '\t') {
-    //   int shift = 0;
-    //   shift = TAB - (pos % TAB);
-    //   spaces += shift;
-    //   pos += shift;
-    // } else if (s[i] == ' ') {
-    //   spaces++;
-    // } else {
-    //   if (pos >= ROW_LENGTH) {
-    //     acc[j++] = '\n';
-    //     pos = 0;
-    //     spaces = 0;
-    //   }
-    //
-    //   for (; spaces > 0; spaces--)
-    //     acc[j++] = ' ';
-    //
-    //   acc[j++] = s[i];
-    //   pos++;
-    // }
+    if (pos >= ROW) {
+      if (blank_pos >= 0) {
+        j = blank_pos;
+        blank_pos = -1;
+      }
 
-    // pos++;
-    // if(pos >= ROW_LENGTH) {
-    //   tmp[j++] = '\n';
-    //   pos = 1;
-    // }
-    // tmp[j++] = s[i];
+      acc[j++] = '\n';
+      pos = 0;
+      has_word = 0;
+    }
   }
 
-  // tmp[j] = '\0';
-  //
-  // for (i = 0; i < lim - 1 && tmp[i] != '\0'; i++)
-  //   s[i] = tmp[i];
+  acc[j] = '\0';
+
+  printf("\noutput:\n%s\n-------\n", acc);
+
+  for (i = 0; i < lim - 1 && acc[i] != '\0'; i++)
+    s[i] = acc[i];
 }
