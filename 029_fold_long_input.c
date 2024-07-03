@@ -52,7 +52,7 @@ int get_line(char s[], int lim) {
 }
 
 void fold(char s[], int lim) {
-  int i, j, pos, blank_pos, has_word;
+  int i, j, pos, blank_pos, has_word, inside_word, line_start;
   char acc[lim];
 
   /*
@@ -68,14 +68,18 @@ void fold(char s[], int lim) {
    *  5   kalfj\0
    */
 
-  j = has_word = 0;
+  j = has_word = inside_word = line_start = 0;
   pos = 1;
   blank_pos = -1;
   for (i = 0; s[i] != '\0' && s[i] != '\n' && i < lim - 1; i++) {
     acc[j++] = s[i];
 
-    if ((s[i] == ' ' || s[i] == '\t') && blank_pos < 0)
-      blank_pos = j - 1;
+    if (s[i] == ' ' || s[i] == '\t') {
+      if (blank_pos < 0 || (blank_pos >= 0 && inside_word == 1)) {
+        blank_pos = j - 1;
+        inside_word = 0;
+      }
+    }
 
     if (s[i] == '\t')
       pos += TAB - (pos % TAB);
@@ -88,19 +92,25 @@ void fold(char s[], int lim) {
         pos = 0;
       }
 
+      inside_word = 1;
       pos++;
       has_word = 1;
     }
 
     if (pos >= ROW) {
-      if (blank_pos >= 0) {
+      if (blank_pos >= 0)
         j = blank_pos;
-        blank_pos = -1;
-      }
 
-      acc[j++] = '\n';
-      pos = 0;
+      if (has_word == 0)
+        j = line_start;
+      else
+        acc[j++] = '\n';
+
+      blank_pos = -1;
+      pos = 1;
       has_word = 0;
+      inside_word = 0;
+      line_start = j;
     }
   }
 
