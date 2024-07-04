@@ -92,14 +92,19 @@ void fold(char s[], int lim) {
         pos = 0;
       }
 
-      inside_word = 1;
       pos++;
+      inside_word = 1;
       has_word = 1;
     }
 
     if (pos >= ROW) {
       if (blank_pos >= 0)
         j = blank_pos;
+
+      if (inside_word == 1) {
+        // TODO need to shift i backward
+        // i = word_start;
+      }
 
       if (has_word == 0)
         j = line_start;
