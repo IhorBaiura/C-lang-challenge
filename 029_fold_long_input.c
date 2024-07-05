@@ -52,7 +52,7 @@ int get_line(char s[], int lim) {
 }
 
 void fold(char s[], int lim) {
-  int i, j, pos, blank_pos, has_word, inside_word, line_start;
+  int i, j, pos, blank_pos, has_word, word_start_pos, line_start;
   char acc[lim];
 
   /*
@@ -68,16 +68,19 @@ void fold(char s[], int lim) {
    *  5   kalfj\0
    */
 
-  j = has_word = inside_word = line_start = 0;
+  j = has_word = line_start = 0;
   pos = 1;
-  blank_pos = -1;
+  blank_pos = word_start_pos = -1;
   for (i = 0; s[i] != '\0' && s[i] != '\n' && i < lim - 1; i++) {
     acc[j++] = s[i];
+    printf("s[i]: %c, i: %d, j: %d, line_start: %d\n", s[i], i, j - 1,
+           line_start);
 
     if (s[i] == ' ' || s[i] == '\t') {
-      if (blank_pos < 0 || (blank_pos >= 0 && inside_word == 1)) {
+      if (blank_pos < 0 || (blank_pos >= 0 && word_start_pos > 0)) {
         blank_pos = j - 1;
-        inside_word = 0;
+        word_start_pos = -1;
+        printf("\t__%d__\n", j - 1);
       }
     }
 
@@ -92,8 +95,11 @@ void fold(char s[], int lim) {
         pos = 0;
       }
 
+      if (word_start_pos < 0) {
+        word_start_pos = i;
+      }
+
       pos++;
-      inside_word = 1;
       has_word = 1;
     }
 
@@ -101,9 +107,9 @@ void fold(char s[], int lim) {
       if (blank_pos >= 0)
         j = blank_pos;
 
-      if (inside_word == 1) {
-        // TODO need to shift i backward
-        // i = word_start;
+      if (word_start_pos > 0) {
+        i = word_start_pos - 1;
+        printf("\n\t\t\tword_start_pos: %d\n", word_start_pos);
       }
 
       if (has_word == 0)
@@ -114,8 +120,11 @@ void fold(char s[], int lim) {
       blank_pos = -1;
       pos = 1;
       has_word = 0;
-      inside_word = 0;
+      word_start_pos = -1;
       line_start = j;
+
+      printf("\n\t\t\tprint:  s[i]: %c   j: %d   i: %d   line_start: %d\n\n",
+             s[i], j, i, line_start);
     }
   }
 
