@@ -66,6 +66,22 @@ void fold(char s[], int lim) {
    *  3   adslkfj\n
    *  4   ajlfa_fa\n
    *  5   kalfj\0
+   *
+   *
+   *
+   *    ROW 10
+   *
+   *  1   asdf as dfsa             asd fas                 dsfas fd         a sd
+   * fsdfa                 asfadf adf a
+   *
+   *  1   asdf as
+   *  2   dfsa
+   *  3   asd fas
+   *  4   dsfas fd
+   *  5   a     sd
+   *  6   fsdfa
+   *  7   asfadf
+   *  8   adf a
    */
 
   j = has_word = line_start = 0;
