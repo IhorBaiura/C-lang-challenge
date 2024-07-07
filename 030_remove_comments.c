@@ -13,6 +13,7 @@
 #define MULTILINECOMMENTEND 3
 #define START 0
 #define OUTSIDE -1
+#define INSIDE 1
 
 int get_line(char s[], int lim);
 void remove_comments(char s[]);
@@ -45,10 +46,11 @@ int get_line(char s[], int lim) {
 }
 
 void remove_comments(char s[]) {
-  int i, j, comment, comment_start;
+  int i, j, comment, comment_start, quote;
   char prev_char;
 
   comment = OUTSIDE;
+  quote = OUTSIDE;
   prev_char = 'a';
   j = 0;
   comment_start = OUTSIDE;
@@ -56,7 +58,7 @@ void remove_comments(char s[]) {
     s[j++] = s[i];
 
     if (s[i] == '/') {
-      if (comment == OUTSIDE)
+      if (comment == OUTSIDE && quote == OUTSIDE)
         comment = START;
 
       else if (comment == START) {
@@ -76,6 +78,11 @@ void remove_comments(char s[]) {
 
       else if (comment == MULTILINECOMMENT)
         comment = MULTILINECOMMENTEND;
+    } else if (s[i] == '"') {
+      if (quote == INSIDE)
+        quote = OUTSIDE;
+      else
+        quote = INSIDE;
     } else {
       if (comment == MULTILINECOMMENTEND)
         comment = MULTILINECOMMENT;
