@@ -59,12 +59,12 @@ void remove_comments(char s[]) {
       if (comment == OUTSIDE)
         comment = START;
 
-      if (comment == START) {
+      else if (comment == START) {
         comment = LINECOMMENT;
         comment_start = j - 2;
       }
 
-      if (comment == MULTILINECOMMENTEND) {
+      else if (comment == MULTILINECOMMENTEND) {
         j = comment_start;
         comment = OUTSIDE;
       }
@@ -72,17 +72,15 @@ void remove_comments(char s[]) {
       if (comment == START) {
         comment = MULTILINECOMMENT;
         comment_start = j - 2;
-        // printf("\n\t\t\tstart MULTILINECOMMENT: %d, %c\n", s[comment_start],
-        //        comment_start);
       }
 
-      if (comment == MULTILINECOMMENT)
+      else if (comment == MULTILINECOMMENT)
         comment = MULTILINECOMMENTEND;
     } else {
       if (comment == MULTILINECOMMENTEND)
         comment = MULTILINECOMMENT;
 
-      if (comment == START)
+      else if (comment == START)
         comment = OUTSIDE;
     }
 
