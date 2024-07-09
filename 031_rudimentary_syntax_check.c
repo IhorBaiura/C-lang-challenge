@@ -42,7 +42,7 @@ void check_syntax_error(char s[]) {
       stack[j++] = s[i];
 
     if (s[i] == RIGHT_PARENTHESE || s[i] == RIGHT_BRACE ||
-        s[i] == RIGHT_BRACKET)
+        s[i] == RIGHT_BRACKET) {
       if (j - 1 < 0)
         printf("Unbalanced parentheses, brackets or braces. Missing opening "
                "part for position %d:%d",
@@ -51,5 +51,8 @@ void check_syntax_error(char s[]) {
         printf("Unbalanced parentheses, brackets or braces. Missing opening "
                "part for position %d:%d",
                line, pos);
+      else
+        j--;
+    }
   }
 }
