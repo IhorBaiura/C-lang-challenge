@@ -18,6 +18,10 @@
 #define SINGLE_QUOTE '\''
 #define DOUBLE_QUOTE '"'
 #define FORWARD_SLASH '/'
+#define LINE_COMMENT 1
+#define MULTILINE_COMMENT 2
+#define SEMICOLON ';'
+#define END_OF_LINE '\n'
 
 void check_syntax_error(char s[]);
 
@@ -39,19 +43,40 @@ void check_syntax_error(char s[]) {
     }
 
     if (s[i] == LEFT_PARENTHESE || s[i] == LEFT_BRACE || s[i] == LEFT_BRACKET)
-      stack[j++] = s[i];
+      if (j - 1 < 0 ||
+          (stack[j - 1] != LINE_COMMENT && stack[j - 1] != MULTILINE_COMMENT))
+        stack[j++] = s[i];
 
     if (s[i] == RIGHT_PARENTHESE || s[i] == RIGHT_BRACE ||
-        s[i] == RIGHT_BRACKET) {
-      if (j - 1 < 0)
-        printf("Unbalanced parentheses, brackets or braces. Missing opening "
-               "part for position %d:%d",
-               line, pos);
-      else if (stack[j - 1] != s[i])
-        printf("Unbalanced parentheses, brackets or braces. Missing opening "
-               "part for position %d:%d",
-               line, pos);
-      else
+        s[i] == RIGHT_BRACKET)
+      if (j - 1 < 0 ||
+          (stack[j - 1] != LINE_COMMENT && stack[j - 1] != MULTILINE_COMMENT)) {
+        if (j - 1 < 0)
+          printf("Unbalanced parentheses, brackets or braces. Missing opening "
+                 "part for position %d:%d",
+                 line, pos);
+        else if (stack[j - 1] != s[i])
+          printf("Unbalanced parentheses, brackets or braces. Missing opening "
+                 "part for position %d:%d",
+                 line, pos);
+        else
+          j--;
+      }
+
+    if (s[i] == FORWARD_SLASH) {
+      if (j - 1 < 0 || stack[j - 1] != s[i])
+        stack[j++] = s[i];
+      else if (stack[j - 1] == s[i])
+        stack[j - 1] = LINE_COMMENT;
+    }
+
+    if (s[i] == SEMICOLON) {
+      if (stack[j - 1] == FORWARD_SLASH)
+        j--;
+    }
+
+    if (s[i] == END_OF_LINE) {
+      if (stack[j - 1] == LINE_COMMENT)
         j--;
     }
   }
