@@ -22,6 +22,7 @@
 #define MULTILINE_COMMENT 2
 #define SEMICOLON ';'
 #define END_OF_LINE '\n'
+#define ASTERISK '*'
 
 void check_syntax_error(char s[]);
 
@@ -68,6 +69,11 @@ void check_syntax_error(char s[]) {
         stack[j++] = s[i];
       else if (stack[j - 1] == s[i])
         stack[j - 1] = LINE_COMMENT;
+    }
+
+    if (s[i] == ASTERISK) {
+      if (j - 1 >= 0 || stack[j - 1] == FORWARD_SLASH)
+        stack[j - 1] = MULTILINE_COMMENT;
     }
 
     if (s[i] == SEMICOLON) {
