@@ -53,32 +53,34 @@ void check_syntax_error(char s[]) {
       if (j - 1 < 0 ||
           (stack[j - 1] != LINE_COMMENT && stack[j - 1] != MULTILINE_COMMENT)) {
         if (j - 1 < 0)
-          printf("Unbalanced parentheses, brackets or braces. Missing opening "
-                 "part for position %d:%d",
+          printf("Error (%d:%d): Unbalanced parentheses, brackets or braces. "
+                 "Missing opening part.",
                  line, pos);
         else if (stack[j - 1] != s[i])
-          printf("Unbalanced parentheses, brackets or braces. Missing opening "
-                 "part for position %d:%d",
+          printf("Error (%d:%d): Unbalanced parentheses, brackets or braces. "
+                 "Missing opening part",
                  line, pos);
         else
           j--;
       }
 
     if (s[i] == FORWARD_SLASH) {
-      if (j - 1 < 0 || stack[j - 1] != s[i])
-        stack[j++] = s[i];
-      else if (stack[j - 1] == s[i])
-        stack[j - 1] = LINE_COMMENT;
+      if (i - 1 >= 0 && s[i - 1] == s[i])
+        stack[j++] = LINE_COMMENT;
     }
 
     if (s[i] == ASTERISK) {
-      if (j - 1 >= 0 || stack[j - 1] == FORWARD_SLASH)
+      if (i - 1 >= 0 && s[i - 1] == FORWARD_SLASH &&
+          (j - 1 < 0 || stack[j - 1] != MULTILINE_COMMENT))
         stack[j - 1] = MULTILINE_COMMENT;
-    }
 
-    if (s[i] == SEMICOLON) {
-      if (stack[j - 1] == FORWARD_SLASH)
+      if (s[i + 1] == FORWARD_SLASH && j - 1 >= 0 &&
+          stack[j - 1] == MULTILINE_COMMENT)
         j--;
+      else
+        printf("Error (%d:%d): A symbol was defined to close a multiline "
+               "comment, but without opening it.",
+               line, pos);
     }
 
     if (s[i] == END_OF_LINE) {
