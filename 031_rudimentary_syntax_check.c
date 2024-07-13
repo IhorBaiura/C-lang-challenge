@@ -18,6 +18,7 @@
 #define SINGLE_QUOTE '\''
 #define DOUBLE_QUOTE '"'
 #define FORWARD_SLASH '/'
+#define BACK_SLASH '\\'
 #define LINE_COMMENT 1
 #define MULTILINE_COMMENT 2
 #define SEMICOLON ';'
@@ -65,7 +66,7 @@ void check_syntax_error(char s[]) {
       }
 
     if (s[i] == FORWARD_SLASH) {
-      if (i - 1 >= 0 && s[i - 1] == s[i])
+      if (i - 1 >= 0 && s[i - 1] == FORWARD_SLASH)
         stack[j++] = LINE_COMMENT;
     }
 
@@ -81,6 +82,17 @@ void check_syntax_error(char s[]) {
         printf("Error (%d:%d): A symbol was defined to close a multiline "
                "comment, but without opening it.",
                line, pos);
+    }
+
+    if (s[i] == SINGLE_QUOTE) {
+      if (i - 1 < 0 || (i - 1 >= 0 && s[i - 1] != BACK_SLASH)) {
+        if (j - 1 >= 0 && stack[j - 1] == SINGLE_QUOTE)
+          j--;
+        if (j - 1 < 0 ||
+            (j - 1 >= 0 && stack[j - 1] != DOUBLE_QUOTE &&
+             stack[j - 1] != LINE_COMMENT && stack[j - 1] != MULTILINE_COMMENT))
+          stack[j++] = SINGLE_QUOTE;
+      }
     }
 
     if (s[i] == END_OF_LINE) {
