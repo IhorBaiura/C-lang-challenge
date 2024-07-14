@@ -95,6 +95,17 @@ void check_syntax_error(char s[]) {
       }
     }
 
+    if (s[i] == DOUBLE_QUOTE) {
+      if (i - 1 < 0 || (i - 1 >= 0 && s[i - 1] != BACK_SLASH)) {
+        if (j - 1 >= 0 && stack[j - 1] == DOUBLE_QUOTE)
+          j--;
+        if (j - 1 < 0 ||
+            (j - 1 >= 0 && stack[j - 1] != SINGLE_QUOTE &&
+             stack[j - 1] != LINE_COMMENT && stack[j - 1] != MULTILINE_COMMENT))
+          stack[j++] = DOUBLE_QUOTE;
+      }
+    }
+
     if (s[i] == END_OF_LINE) {
       if (stack[j - 1] == LINE_COMMENT)
         j--;
