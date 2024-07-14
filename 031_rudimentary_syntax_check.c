@@ -46,13 +46,15 @@ void check_syntax_error(char s[]) {
 
     if (s[i] == LEFT_PARENTHESE || s[i] == LEFT_BRACE || s[i] == LEFT_BRACKET)
       if (j - 1 < 0 ||
-          (stack[j - 1] != LINE_COMMENT && stack[j - 1] != MULTILINE_COMMENT))
+          (stack[j - 1] != LINE_COMMENT && stack[j - 1] != MULTILINE_COMMENT &&
+           stack[j - 1] != SINGLE_QUOTE && stack[j - 1] != DOUBLE_QUOTE))
         stack[j++] = s[i];
 
     if (s[i] == RIGHT_PARENTHESE || s[i] == RIGHT_BRACE ||
         s[i] == RIGHT_BRACKET)
       if (j - 1 < 0 ||
-          (stack[j - 1] != LINE_COMMENT && stack[j - 1] != MULTILINE_COMMENT)) {
+          (stack[j - 1] != LINE_COMMENT && stack[j - 1] != MULTILINE_COMMENT &&
+           stack[j - 1] != SINGLE_QUOTE && stack[j - 1] != DOUBLE_QUOTE)) {
         if (j - 1 < 0)
           printf("Error (%d:%d): Unbalanced parentheses, brackets or braces. "
                  "Missing opening part.",
