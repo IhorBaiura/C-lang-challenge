@@ -113,4 +113,12 @@ void check_syntax_error(char s[]) {
         j--;
     }
   }
+
+  for (; j >= 0; j--)
+    if (stack[j] == LEFT_PARENTHESE)
+      printf("Detected unbalanced parentheses: '%c'\n", LEFT_PARENTHESE);
+    else if (stack[j] == LEFT_BRACKET)
+      printf("Detected unbalanced bracket: '%c'\n", LEFT_BRACKET);
+    else if (stack[j] == LEFT_BRACE)
+      printf("Detected unbalanced brace: '%c'\n", LEFT_BRACE);
 }
