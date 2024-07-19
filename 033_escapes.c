@@ -12,5 +12,10 @@ int main(int argc, char *argv[]) {
 
   printf("%d\n", '\0');
 
+  printf("%d\n", '0' * '1' * '2');
+  printf("%d\n", '0' == 48);
+  printf("%d\n", '\v');
+  printf("%c\t%c\t%c\n", 75, '\113', '\x4b');
+
   return 0;
 }
