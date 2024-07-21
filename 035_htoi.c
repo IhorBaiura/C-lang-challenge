@@ -8,7 +8,6 @@
  */
 
 #include <stdio.h>
-#include <string.h>
 
 #define IS_HEX 1
 
@@ -26,12 +25,67 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-long htoi(char str[]) {
-  int i;
-  long res;
+long _strlen(char str[]);
+char _ishexdigit(char c);
+char _charhextodecimal(char c);
+long _pow(int x, int pow);
 
-  for (i = 0; i < strlen(str); i++) {
+long htoi(char str[]) {
+  int i, pos, beginnig;
+  long res, len;
+
+  beginnig = 0;
+  res = 0L;
+  len = _strlen(str);
+
+  if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X'))
+    beginnig = 2;
+
+  for (i = len; i >= beginnig; i--) {
+    if (!_ishexdigit(str[i]))
+      return -1;
+
+    res += _pow(16, len - i) * _charhextodecimal(str[i]);
   }
 
-  return 1;
+  return res;
+}
+
+char _ishexdigit(char c) {
+  if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') ||
+      (c >= 'A' && c <= 'F'))
+    return 1;
+
+  return 0;
+}
+
+long _strlen(char str[]) {
+  long i;
+
+  for (i = 0; str[i] != '\0' || str[i] != EOF; i++)
+    ;
+
+  return i;
+}
+
+char _charhextodecimal(char c) {
+  if (c >= '0' && c <= '9')
+    return c - '0';
+
+  if (c >= 'a' && c <= 'f')
+    return c - 'a' + 10;
+
+  if (c >= 'A' && c <= 'F')
+    return c - 'A' + 10;
+
+  return -1;
+}
+
+long _pow(int x, int pow) {
+  long res;
+
+  for (int i = 0, res = 1; i <= pow; i++)
+    res *= x;
+
+  return res;
 }
