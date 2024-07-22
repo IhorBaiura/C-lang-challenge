@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 
 long _strlen(char str[]);
 char _ishexdigit(char c);
-char _charhextodecimal(char c);
+int _charhextodecimal(char c);
 long _pow(int x, int pow);
 
 long htoi(char str[]) {
@@ -41,11 +41,11 @@ long htoi(char str[]) {
   if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X'))
     beginnig = 2;
 
-  for (i = len; i >= beginnig; i--) {
+  for (i = len - 1; i >= beginnig; i--) {
     if (!_ishexdigit(str[i]))
       return -1;
 
-    res += _pow(16, len - i) * _charhextodecimal(str[i]);
+    res += _pow(16, len - 1 - i) * _charhextodecimal(str[i]);
   }
 
   return res;
@@ -62,13 +62,13 @@ char _ishexdigit(char c) {
 long _strlen(char str[]) {
   long i;
 
-  for (i = 0; str[i] != '\0' || str[i] != EOF; i++)
+  for (i = 0; str[i] != '\0' && str[i] != EOF; i++)
     ;
 
   return i;
 }
 
-char _charhextodecimal(char c) {
+int _charhextodecimal(char c) {
   if (c >= '0' && c <= '9')
     return c - '0';
 
@@ -82,9 +82,9 @@ char _charhextodecimal(char c) {
 }
 
 long _pow(int x, int pow) {
-  long res;
+  long res = 1;
 
-  for (int i = 0, res = 1; i <= pow; i++)
+  for (int i = 0; i < pow; i++)
     res *= x;
 
   return res;
