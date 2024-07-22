@@ -36,16 +36,16 @@ long htoi(char str[]) {
 
   beginnig = 0;
   res = 0L;
-  len = _strlen(str);
+  len = _strlen(str) - 1;
 
   if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X'))
     beginnig = 2;
 
-  for (i = len - 1; i >= beginnig; i--) {
+  for (i = len; i >= beginnig; i--) {
     if (!_ishexdigit(str[i]))
       return -1;
 
-    res += _pow(16, len - 1 - i) * _charhextodecimal(str[i]);
+    res += _pow(16, len - i) * _charhextodecimal(str[i]);
   }
 
   return res;
