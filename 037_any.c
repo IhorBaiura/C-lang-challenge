@@ -9,15 +9,24 @@
 
 #include <stdio.h>
 
-int any(char str1[], char str2[]);
+int any(const char str1[], const char str2[]);
 
 int main(int argc, char *argv[]) {
   char str1[] = "this is the first string";
-  char str2[] = "first string";
+  char str2[] = "abr";
 
   printf("%d\n", any(str1, str2));
 
   return 0;
 }
 
-int any(char str1[], char str2[]) { return -1; }
+int any(const char str1[], const char str2[]) {
+  int i, j;
+
+  for (i = 0; str1[i] != '\0'; i++)
+    for (j = 0; str2[j] != '\0'; j++)
+      if (str1[i] == str2[j])
+        return i;
+
+  return -1;
+}
