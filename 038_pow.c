@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   printf("_pow: %d ^ %d = %lld\n", num3, pow3, _pow(num3, pow3));
 
   int num4 = 5;
-  int pow4 = 977;
+  int pow4 = 7777;
 
   clock_t begin_loop = clock();
   long long res4_loop = 0;
@@ -52,6 +52,9 @@ int main(int argc, char *argv[]) {
 
   // pow_loop: 5 ^ 777 = 7816586455663677797       time: 0.673203
   // _pow    : 5 ^ 777 = 7816586455663677797       tiem: 0.034117  ~20x faster
+  //
+  // pow_loop: 5 ^ 7777 = 3076811297294545029      time: 6.605864
+  // _pow    : 5 ^ 7777 = 3076811297294545029      tiem: 0.058358  ~113 faster
 
   return 0;
 }
