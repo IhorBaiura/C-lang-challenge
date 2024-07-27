@@ -5,13 +5,14 @@
  */
 
 #include <stdio.h>
-#include <time.h>
+// #include <time.h>
 
 #define BITE_SIZE 8
 
 void printb(int num);
 void printb_bitwice(int num);
 unsigned int bit_masking(unsigned int num, unsigned int mask);
+char parity(int num);
 
 int main(int argc, char *argv[]) {
   // int num = 125;
@@ -53,6 +54,9 @@ int main(int argc, char *argv[]) {
 
   bit_masking(125, 15);
   bit_masking(1275, 255);
+
+  parity(125);
+  parity(124);
 
   return 0;
 }
@@ -117,4 +121,16 @@ unsigned int bit_masking(unsigned int num, unsigned int mask) {
   printf("\n");
 
   return res;
+}
+
+char parity(int num) {
+  if (num & 1) {
+    printf("%d is odd\n", num);
+    return 1;
+  } else {
+    printf("%d is even\n", num);
+    return 0;
+  }
+
+  // return num & 1;
 }
