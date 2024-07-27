@@ -1,6 +1,8 @@
 /*
  *
+ * & (AND):
  * 1. bit masking
+ * 2. parity
  *
  */
 
