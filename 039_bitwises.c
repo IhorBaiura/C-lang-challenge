@@ -7,17 +7,20 @@
 #include <stdio.h>
 #include <time.h>
 
+#define BITE_SIZE 8
+
 void printb(int num);
 void printb_bitwice(int num);
+unsigned int bit_masking(unsigned int num, unsigned int mask);
 
 int main(int argc, char *argv[]) {
-  int num = 125;
+  // int num = 125;
+  //
+  // printb(num);
+  // printb(573);
+  // printb(0);
 
-  printb(num);
-  printb(573);
-  printb(0);
-
-  clock_t begin_loop = clock();
+  /*clock_t begin_loop = clock();
   for (int i = 0; i < 1000000000; i++)
     printb(15758);
   clock_t end_loop = clock();
@@ -30,7 +33,7 @@ int main(int argc, char *argv[]) {
   printf("printb\t\t: time: %f\n",
          (double)(end_loop - begin_loop) / CLOCKS_PER_SEC);
   printf("printb_bitwice\t: tiem: %f\n",
-         (double)(end_smart - begin_smart) / CLOCKS_PER_SEC);
+         (double)(end_smart - begin_smart) / CLOCKS_PER_SEC);*/
 
   /*
    *
@@ -48,11 +51,14 @@ int main(int argc, char *argv[]) {
    *
    */
 
+  bit_masking(125, 15);
+  bit_masking(1275, 255);
+
   return 0;
 }
 
 void printb(int num) {
-  char binary[sizeof(unsigned int) * 8];
+  char binary[sizeof(unsigned int) * BITE_SIZE];
   int i, j;
 
   i = 0;
@@ -64,7 +70,7 @@ void printb(int num) {
       num /= 2;
     }
 
-  while (i % 4 != 0)
+  while (/* i % 4 != 0 &&  */ i % (2 * BITE_SIZE) != 0)
     binary[i++] = 0;
 
   for (j = i - 1; j >= 0; j--) {
@@ -97,4 +103,18 @@ void printb_bitwice(int num) {
     printf("%d", binary[j]);
   }
   printf("\n");
+}
+
+unsigned int bit_masking(unsigned int num, unsigned int mask) {
+  unsigned int res = num & mask;
+
+  printf("number\t: ");
+  printb(num);
+  printf("mask\t: ");
+  printb(mask);
+  printf("result\t: ");
+  printb(res);
+  printf("\n");
+
+  return res;
 }
