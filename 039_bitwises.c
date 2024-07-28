@@ -1,19 +1,24 @@
 /*
  *
- * & (AND):
- * 1. bit masking
- * 2. parity
+ * 1. bit masking             (& AND)
+ * 2. parity                  (& AND)
+ * 3. set_bits_to_zero        (& AND   ~ one’s complement)
  *
  */
 
 #include <stdio.h>
 // #include <time.h>
+#include <stdbool.h>
 
 #define BITE_SIZE 8
 
+enum SIGN { NEGATIVE, POSITIVE };
+
 void printb(int num);
 void printb_bitwice(int num);
+
 unsigned int bit_masking(unsigned int num, unsigned int mask);
+unsigned int set_bits_to_zero(unsigned int num, unsigned int mask);
 char parity(int num);
 
 int main(int argc, char *argv[]) {
@@ -54,18 +59,30 @@ int main(int argc, char *argv[]) {
    *
    */
 
-  bit_masking(125, 15);
-  bit_masking(1275, 255);
+  bit_masking(125, 0xF);
+  bit_masking(64507, 0xFF);
 
   parity(125);
   parity(124);
 
+  set_bits_to_zero(125, 0xF);
+  set_bits_to_zero(64507, 0xFF);
+
   return 0;
 }
 
-void printb(int num) {
-  char binary[sizeof(unsigned int) * BITE_SIZE];
+void printb(signed int num) {
+  char binary[sizeof(unsigned int) * BITE_SIZE] = {0};
+  char sign = POSITIVE;
+  char reminder = 1;
   int i, j;
+
+  printf("printb num: %d\t", num);
+
+  if (num < 0) {
+    num = -num;
+    sign = NEGATIVE;
+  }
 
   i = 0;
   if (num == 0)
@@ -76,11 +93,25 @@ void printb(int num) {
       num /= 2;
     }
 
-  while (/* i % 4 != 0 &&  */ i % (2 * BITE_SIZE) != 0)
-    binary[i++] = 0;
+  // while (i % (sizeof(unsigned int) * BITE_SIZE) != 0)
+  //   binary[i++] = 0;
 
-  for (j = i - 1; j >= 0; j--) {
-    if ((j + 1) % 4 == 0 && j != i - 1)
+  if (sign == NEGATIVE) {
+    for (j = sizeof(unsigned int) * BITE_SIZE - 1; j >= 0; j--) {
+      printf("\n!binary[%d]: %d, reminder: %d\n", j, !binary[j], reminder);
+      if (!binary[j] + reminder > 1) {
+        reminder = 1;
+        binary[j] = 0;
+      } else {
+        reminder = 0;
+        binary[j] = 1;
+      }
+      printf("!binary[%d]: %d, reminder: %d\n", j, !binary[j], reminder);
+    }
+  }
+
+  for (j = sizeof(unsigned int) * BITE_SIZE - 1; j >= 0; j--) {
+    if ((j + 1) % 4 == 0 && j != sizeof(unsigned int) * BITE_SIZE - 1)
       printf(" ");
     printf("%d", binary[j]);
   }
@@ -88,7 +119,7 @@ void printb(int num) {
 }
 
 void printb_bitwice(int num) {
-  char binary[sizeof(unsigned int) * 8];
+  char binary[sizeof(unsigned int) * 8], sign;
   int i, j;
 
   i = 0;
@@ -100,7 +131,7 @@ void printb_bitwice(int num) {
       num >>= 1;
     }
 
-  while (i % 4 != 0)
+  while (i % (sizeof(unsigned int) * BITE_SIZE) != 0)
     binary[i++] = 0;
 
   for (j = i - 1; j >= 0; j--) {
@@ -111,9 +142,11 @@ void printb_bitwice(int num) {
   printf("\n");
 }
 
+// To extract specific bits from a number or to clear specific bits
 unsigned int bit_masking(unsigned int num, unsigned int mask) {
   unsigned int res = num & mask;
 
+  printf("\n---------- bit_masking ----------\n");
   printf("number\t: ");
   printb(num);
   printf("mask\t: ");
@@ -135,4 +168,20 @@ char parity(int num) {
   }
 
   // return num & 1;
+}
+
+// Setting Specific Bits to Zero. Clear specific bits in a number.
+unsigned int set_bits_to_zero(unsigned int num, unsigned int mask) {
+  unsigned int res = num & ~mask;
+
+  printf("\n---------- set_bits_to_zero ----------\n");
+  printf("number\t: ");
+  printb(num);
+  printf("mask\t: ");
+  printb(~mask);
+  printf("result\t: ");
+  printb(res);
+  printf("\n");
+
+  return res;
 }
