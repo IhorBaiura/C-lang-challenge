@@ -37,6 +37,8 @@ unsigned int align_to_power_of_two(unsigned int num);
 unsigned int encrypt(int data, int key);
 unsigned int decrypt(int data, int key);
 unsigned int multiplying_by_powers_of_two(int num, int power_of_two);
+unsigned int pack_values(const char s[4]);
+unsigned int unpack_values(unsigned int packed_value);
 
 int main(int argc, char *argv[]) {
 
@@ -168,6 +170,11 @@ int main(int argc, char *argv[]) {
   data = decrypt(data, key);
 
   multiplying_by_powers_of_two(5, 3);
+
+  char values[] = {3, 7, 15, 9};
+  int packed_value = pack_values(values);
+  printf("packed value: %d\n", packed_value);
+  unpack_values(packed_value);
 
   return 0;
 }
@@ -382,4 +389,31 @@ unsigned int multiplying_by_powers_of_two(int num, int power_of_two) {
   printf("%d * 2 ^ %d = %d\n", num, power_of_two, res);
 
   return res;
+}
+
+unsigned int pack_values(const char s[4]) {
+  printf("\n---------- pack_values ----------\n");
+  unsigned int i, res;
+
+  res = 0;
+  for (i = 0; i < 4; i++) {
+    res = (res << 8) | s[i];
+    printb(res);
+  }
+
+  return res;
+}
+
+unsigned int unpack_values(unsigned int packed_value) {
+  printf("\n---------- unpack_values ----------\n");
+  unsigned int i, mask;
+  char res;
+
+  mask = 0xFF;
+  res = 0;
+  for (i = 0; i < 4; i++) {
+    printb((packed_value & mask << (8 * i)) >> (8 * i));
+  }
+
+  return mask;
 }
