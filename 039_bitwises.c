@@ -84,8 +84,17 @@ int main(int argc, char *argv[]) {
   check_bit(15, 3);
   check_bit(15, 4);
 
-  show_permissions(READ_PERMISSION | WRITE_PERMISSION);
-  show_permissions(READ_PERMISSION | EXECUTE_PERMISSION);
+  unsigned int permissions =
+      READ_PERMISSION | WRITE_PERMISSION; // Combine permissions
+  printf("\nPermissions: ");
+  printb(permissions); // Output: 3 (binary: 0000 0011)
+  show_permissions(permissions);
+
+  unsigned int permissions1 =
+      READ_PERMISSION | EXECUTE_PERMISSION; // Combine permissions
+  printf("\nPermissions1: ");
+  printb(permissions1); // Output: 5 (binary: 0000 0101)
+  show_permissions(permissions1);
 
   align_to_power_of_two(55);
   align_to_power_of_two(132);
