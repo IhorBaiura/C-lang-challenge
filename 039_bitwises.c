@@ -7,6 +7,8 @@
  * 4. check_bit               (& AND   << left shift)
  * 5. show_permissions        (& AND)
  *
+ * ...
+ *
  */
 
 #include <stdio.h>
@@ -18,8 +20,8 @@
 enum SIGN { NEGATIVE, POSITIVE };
 enum PERMISSIONS {
   READ_PERMISSION = 1,
-  WRITE_PERMISSION = 2,
-  EXECUTE_PERMISSION = 4,
+  WRITE_PERMISSION = 1 << 1,
+  EXECUTE_PERMISSION = 1 << 2,
 };
 
 void printb(int num);
@@ -27,13 +29,16 @@ void printb_bitwice(int num);
 
 unsigned int bit_masking(unsigned int num, unsigned int mask);
 unsigned int set_bits_to_zero(unsigned int num, unsigned int mask);
-unsigned int set_specific_bits(unsigned int num, unsigned int mask);
+unsigned int set_specific_bits_to_one(unsigned int num, unsigned int mask);
 bool parity(int num);
 bool check_bit(unsigned int num, unsigned char bit_position);
 void show_permissions(unsigned int permissions);
 unsigned int align_to_power_of_two(unsigned int num);
+unsigned int encrypt(int data, int key);
+unsigned int decrypt(int data, int key);
 
 int main(int argc, char *argv[]) {
+
   // int num = 125;
   //
   // printb(num);
@@ -101,8 +106,65 @@ int main(int argc, char *argv[]) {
   align_to_power_of_two(99);
   align_to_power_of_two(7);
 
-  set_specific_bits(112, 0x5);
-  set_specific_bits(43776, 0xFF);
+  set_specific_bits_to_one(112, 0x5);
+  set_specific_bits_to_one(43776, 0xFF);
+
+  char a = 5;
+  printf("a: ");
+  printb(a);
+  char b = 17;
+  printf("b: ");
+  printb(b);
+
+  printf("a & b: ");
+  printb(a & b);
+
+  printf("a | b: ");
+  printb(a | b);
+
+  printf("a ^ b: ");
+  printb(a ^ b);
+
+  printf("a << 1: ");
+  printb(a << 1);
+
+  printf("a << 3: ");
+  printb(a << 3);
+
+  printf("a >> 1: ");
+  printb(a >> 1);
+
+  printf("a >> 3: ");
+  printb(a >> 3);
+
+  unsigned int red = 0xFF0000;   // Red component (FF0000 in hex)
+  unsigned int green = 0x00FF00; // Green component (00FF00 in hex)
+  unsigned int blue = 0x0000FF;  // Blue component (0000FF in hex)
+
+  // Combine red, green, and blue into a single color value
+  unsigned int color = red | green | blue; // result: 0xFFFFFF (white)
+
+  printf("\n\nCombined color: 0x%X\n", color); // Output: 0xFFFFFF
+
+  // Swapping Two Variables Without a Temporary Variable
+  unsigned int x = 5; // 5 in binary: 0000 0101
+  unsigned int y = 9; // 9 in binary: 0000 1001
+
+  printf("Before swap: x = %u, y = %u\n", x, y);
+
+  x = x ^ y; // x now becomes 0000 1100 (12 in decimal)
+  y = x ^ y; // y now becomes 0000 0101 (5 in decimal)
+  x = x ^ y; // x now becomes 0000 1001 (9 in decimal)
+
+  printf("After swap: x = %u, y = %u\n", x, y); // Output: x = 9, y = 5
+
+  printf("\n---------- data encription ----------\n");
+  int data = 155;
+  int key = 7463;
+  printf("original data: %d\n", data);
+
+  data = encrypt(data, key);
+  data = decrypt(data, key);
 
   return 0;
 }
@@ -219,8 +281,8 @@ unsigned int set_bits_to_zero(unsigned int num, unsigned int mask) {
   return res;
 }
 
-// To set specific bits to defined positions.
-unsigned int set_specific_bits(unsigned int num, unsigned int mask) {
+// To set specific bits of a number to 1.
+unsigned int set_specific_bits_to_one(unsigned int num, unsigned int mask) {
   unsigned int res = num | mask;
 
   printf("\n---------- set_bits_to_zero ----------\n");
@@ -295,4 +357,16 @@ unsigned int align_to_power_of_two(unsigned int num) {
   printf("aligned\t: %d\n", num + 1);
 
   return num + 1;
+}
+
+unsigned int encrypt(int data, int key) {
+  unsigned int encrypted = data ^ key;
+  printf("Encrypted data: %d\n", encrypted);
+  return encrypted;
+}
+
+unsigned int decrypt(int data, int key) {
+  unsigned int decrypted = data ^ key;
+  printf("Decrypted data: %d\n", decrypted);
+  return decrypted;
 }
