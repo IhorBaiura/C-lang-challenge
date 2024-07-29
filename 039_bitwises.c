@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
   // printb(num);
   // printb(573);
   // printb(0);
+  // printb(-16);
 
   /*clock_t begin_loop = clock();
   for (int i = 0; i < 1000000000; i++)
@@ -97,8 +98,10 @@ void printb(signed int num) {
   //   binary[i++] = 0;
 
   if (sign == NEGATIVE) {
-    for (j = sizeof(unsigned int) * BITE_SIZE - 1; j >= 0; j--) {
-      printf("\n!binary[%d]: %d, reminder: %d\n", j, !binary[j], reminder);
+    for (j = 0; j < sizeof(unsigned int) * BITE_SIZE; j++) {
+      // printf("\nbinary[%d]: %d, !binary[%d]: %d, reminder: %d\n", j,
+      // binary[j],
+      //        j, !binary[j], reminder);
       if (!binary[j] + reminder > 1) {
         reminder = 1;
         binary[j] = 0;
@@ -106,7 +109,7 @@ void printb(signed int num) {
         reminder = 0;
         binary[j] = 1;
       }
-      printf("!binary[%d]: %d, reminder: %d\n", j, !binary[j], reminder);
+      // printf("binary num: %d, reminder: %d\n", binary[j], reminder);
     }
   }
 
@@ -178,6 +181,8 @@ unsigned int set_bits_to_zero(unsigned int num, unsigned int mask) {
   printf("number\t: ");
   printb(num);
   printf("mask\t: ");
+  printb(mask);
+  printf("(~mask)\t: ");
   printb(~mask);
   printf("result\t: ");
   printb(res);
