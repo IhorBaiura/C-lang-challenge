@@ -4,6 +4,7 @@
  * 2. parity                  (& AND)
  * 3. set_bits_to_zero        (& AND   ~ one’s complement)
  * 4. check_bit               (& AND   << left shift)
+ * 5. show_permissions        (& AND)
  *
  */
 
@@ -14,6 +15,11 @@
 #define BITE_SIZE 8
 
 enum SIGN { NEGATIVE, POSITIVE };
+enum PERMISSIONS {
+  READ_PERMISSION = 1,
+  WRITE_PERMISSION = 2,
+  EXECUTE_PERMISSION = 4,
+};
 
 void printb(int num);
 void printb_bitwice(int num);
@@ -22,6 +28,7 @@ unsigned int bit_masking(unsigned int num, unsigned int mask);
 unsigned int set_bits_to_zero(unsigned int num, unsigned int mask);
 bool parity(int num);
 bool check_bit(unsigned int num, unsigned char bit_position);
+void show_permissions(unsigned int permissions);
 
 int main(int argc, char *argv[]) {
   // int num = 125;
@@ -73,6 +80,9 @@ int main(int argc, char *argv[]) {
 
   check_bit(15, 3);
   check_bit(15, 4);
+
+  show_permissions(READ_PERMISSION | WRITE_PERMISSION);
+  show_permissions(READ_PERMISSION | EXECUTE_PERMISSION);
 
   return 0;
 }
@@ -206,5 +216,28 @@ bool check_bit(unsigned int num, unsigned char bit_position) {
   } else {
     printf("The %d bit is not set.\n", bit_position);
     return false;
+  }
+}
+
+// To check or set specific permission bits or flags in systems programming.
+void show_permissions(unsigned int permissions) {
+  printf("\n---------- show_permissions ----------\n");
+
+  if (permissions & READ_PERMISSION) {
+    printf("User has read permission.\n");
+  } else {
+    printf("User does not have read permission.\n");
+  }
+
+  if (permissions & WRITE_PERMISSION) {
+    printf("User has write permission.\n");
+  } else {
+    printf("User does not have write permission.\n");
+  }
+
+  if (permissions & EXECUTE_PERMISSION) {
+    printf("User has execute permission.\n");
+  } else {
+    printf("User does not have execute permission.\n");
   }
 }
