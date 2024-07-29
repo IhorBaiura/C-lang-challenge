@@ -3,6 +3,7 @@
  * 1. bit masking             (& AND)
  * 2. parity                  (& AND)
  * 3. set_bits_to_zero        (& AND   ~ one’s complement)
+ * 4. set_specific_bits       (| OR)
  * 4. check_bit               (& AND   << left shift)
  * 5. show_permissions        (& AND)
  *
@@ -26,9 +27,11 @@ void printb_bitwice(int num);
 
 unsigned int bit_masking(unsigned int num, unsigned int mask);
 unsigned int set_bits_to_zero(unsigned int num, unsigned int mask);
+unsigned int set_specific_bits(unsigned int num, unsigned int mask);
 bool parity(int num);
 bool check_bit(unsigned int num, unsigned char bit_position);
 void show_permissions(unsigned int permissions);
+unsigned int align_to_power_of_two(unsigned int num);
 
 int main(int argc, char *argv[]) {
   // int num = 125;
@@ -83,6 +86,14 @@ int main(int argc, char *argv[]) {
 
   show_permissions(READ_PERMISSION | WRITE_PERMISSION);
   show_permissions(READ_PERMISSION | EXECUTE_PERMISSION);
+
+  align_to_power_of_two(55);
+  align_to_power_of_two(132);
+  align_to_power_of_two(99);
+  align_to_power_of_two(7);
+
+  set_specific_bits(112, 0x5);
+  set_specific_bits(43776, 0xFF);
 
   return 0;
 }
@@ -199,6 +210,22 @@ unsigned int set_bits_to_zero(unsigned int num, unsigned int mask) {
   return res;
 }
 
+// To set specific bits to defined positions.
+unsigned int set_specific_bits(unsigned int num, unsigned int mask) {
+  unsigned int res = num | mask;
+
+  printf("\n---------- set_bits_to_zero ----------\n");
+  printf("number\t: ");
+  printb(num);
+  printf("mask\t: ");
+  printb(mask);
+  printf("result\t: ");
+  printb(res);
+  printf("\n");
+
+  return res;
+}
+
 // To test if specific bits in a number are set.
 bool check_bit(unsigned int num, unsigned char bit_position) {
   unsigned int mask = 1 << bit_position;
@@ -240,4 +267,23 @@ void show_permissions(unsigned int permissions) {
   } else {
     printf("User does not have execute permission.\n");
   }
+}
+
+// Align a number to the nearest lower power of two for memory allocation.
+unsigned int align_to_power_of_two(unsigned int num) {
+  printf("\n---------- align_to_power_of_two ----------\n");
+  printf("num\t: %d\n", num);
+
+  if (num == 0)
+    return 0;
+  num--;
+  num |= num >> 1;
+  num |= num >> 2;
+  num |= num >> 4;
+  num |= num >> 8;
+  num |= num >> 16;
+
+  printf("aligned\t: %d\n", num + 1);
+
+  return num + 1;
 }
