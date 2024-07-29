@@ -429,7 +429,7 @@ unsigned int unpack_values(unsigned int packed_value) {
   mask = 0xFF;
   res = 0;
   for (i = 0; i < 4; i++) {
-    printb((packed_value & mask << (8 * i)) >> (8 * i));
+    printb((packed_value >> (8 * i)) & mask);
   }
 
   return mask;
