@@ -37,6 +37,7 @@ unsigned int align_to_power_of_two(unsigned int num);
 unsigned int encrypt(int data, int key);
 unsigned int decrypt(int data, int key);
 unsigned int multiplying_by_powers_of_two(int num, int power_of_two);
+unsigned int dividing_by_powers_of_two(int num, int power_of_two);
 unsigned int pack_values(const char s[4]);
 unsigned int unpack_values(unsigned int packed_value);
 
@@ -175,6 +176,9 @@ int main(int argc, char *argv[]) {
   int packed_value = pack_values(values);
   printf("packed value: %d\n", packed_value);
   unpack_values(packed_value);
+
+  dividing_by_powers_of_two(24, 3);
+  dividing_by_powers_of_two(40, 3);
 
   return 0;
 }
@@ -391,6 +395,18 @@ unsigned int multiplying_by_powers_of_two(int num, int power_of_two) {
   return res;
 }
 
+// To efficiently divide an integer by a power of two.
+unsigned int dividing_by_powers_of_two(int num, int power_of_two) {
+  unsigned int res = num >> power_of_two;
+
+  printf("\n---------- dividing_by_powers_of_two ----------\n");
+  printf("%d / 2 ^ %d = %d\n", num, power_of_two, res);
+
+  return res;
+}
+
+// To pack multiple smaller integer (char in this case) values into a single
+// larger integer for compact storage or transmission.
 unsigned int pack_values(const char s[4]) {
   printf("\n---------- pack_values ----------\n");
   unsigned int i, res;
@@ -404,6 +420,7 @@ unsigned int pack_values(const char s[4]) {
   return res;
 }
 
+// To unpack a single larger integer into multiple smaller integer.
 unsigned int unpack_values(unsigned int packed_value) {
   printf("\n---------- unpack_values ----------\n");
   unsigned int i, mask;
