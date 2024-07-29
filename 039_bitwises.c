@@ -36,6 +36,7 @@ void show_permissions(unsigned int permissions);
 unsigned int align_to_power_of_two(unsigned int num);
 unsigned int encrypt(int data, int key);
 unsigned int decrypt(int data, int key);
+unsigned int multiplying_by_powers_of_two(int num, int power_of_two);
 
 int main(int argc, char *argv[]) {
 
@@ -165,6 +166,8 @@ int main(int argc, char *argv[]) {
 
   data = encrypt(data, key);
   data = decrypt(data, key);
+
+  multiplying_by_powers_of_two(5, 3);
 
   return 0;
 }
@@ -369,4 +372,14 @@ unsigned int decrypt(int data, int key) {
   unsigned int decrypted = data ^ key;
   printf("Decrypted data: %d\n", decrypted);
   return decrypted;
+}
+
+// To efficiently multiply an integer by a power of two.
+unsigned int multiplying_by_powers_of_two(int num, int power_of_two) {
+  unsigned int res = num << power_of_two;
+
+  printf("\n---------- multiplying_by_powers_of_two ----------\n");
+  printf("%d * 2 ^ %d = %d\n", num, power_of_two, res);
+
+  return res;
 }
