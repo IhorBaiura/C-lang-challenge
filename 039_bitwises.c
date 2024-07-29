@@ -3,6 +3,7 @@
  * 1. bit masking             (& AND)
  * 2. parity                  (& AND)
  * 3. set_bits_to_zero        (& AND   ~ one’s complement)
+ * 4. check_bit               (& AND   << left shift)
  *
  */
 
@@ -19,7 +20,8 @@ void printb_bitwice(int num);
 
 unsigned int bit_masking(unsigned int num, unsigned int mask);
 unsigned int set_bits_to_zero(unsigned int num, unsigned int mask);
-char parity(int num);
+bool parity(int num);
+bool check_bit(unsigned int num, unsigned char bit_position);
 
 int main(int argc, char *argv[]) {
   // int num = 125;
@@ -69,6 +71,9 @@ int main(int argc, char *argv[]) {
   set_bits_to_zero(125, 0xF);
   set_bits_to_zero(64507, 0xFF);
 
+  check_bit(15, 3);
+  check_bit(15, 4);
+
   return 0;
 }
 
@@ -78,7 +83,7 @@ void printb(signed int num) {
   char reminder = 1;
   int i, j;
 
-  printf("printb num: %d\t", num);
+  printf("printb num: %d \t\t", num);
 
   if (num < 0) {
     num = -num;
@@ -94,14 +99,8 @@ void printb(signed int num) {
       num /= 2;
     }
 
-  // while (i % (sizeof(unsigned int) * BITE_SIZE) != 0)
-  //   binary[i++] = 0;
-
   if (sign == NEGATIVE) {
     for (j = 0; j < sizeof(unsigned int) * BITE_SIZE; j++) {
-      // printf("\nbinary[%d]: %d, !binary[%d]: %d, reminder: %d\n", j,
-      // binary[j],
-      //        j, !binary[j], reminder);
       if (!binary[j] + reminder > 1) {
         reminder = 1;
         binary[j] = 0;
@@ -109,7 +108,6 @@ void printb(signed int num) {
         reminder = 0;
         binary[j] = 1;
       }
-      // printf("binary num: %d, reminder: %d\n", binary[j], reminder);
     }
   }
 
@@ -161,7 +159,7 @@ unsigned int bit_masking(unsigned int num, unsigned int mask) {
   return res;
 }
 
-char parity(int num) {
+bool parity(int num) {
   if (num & 1) {
     printf("%d is odd\n", num);
     return 1;
@@ -189,4 +187,24 @@ unsigned int set_bits_to_zero(unsigned int num, unsigned int mask) {
   printf("\n");
 
   return res;
+}
+
+// To test if specific bits in a number are set.
+bool check_bit(unsigned int num, unsigned char bit_position) {
+  unsigned int mask = 1 << bit_position;
+
+  printf("\n---------- check_bit ----------\n");
+  printf("position: %d\n", bit_position);
+  printf("number\t: ");
+  printb(num);
+  printf("mask\t: ");
+  printb(mask);
+
+  if (num & mask) {
+    printf("The %d bit is set.\n", bit_position);
+    return true;
+  } else {
+    printf("The %d bit is not set.\n", bit_position);
+    return false;
+  }
 }
