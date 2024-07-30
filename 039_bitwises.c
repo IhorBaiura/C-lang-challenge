@@ -180,6 +180,10 @@ int main(int argc, char *argv[]) {
   dividing_by_powers_of_two(24, 3);
   dividing_by_powers_of_two(40, 3);
 
+  printf("\n---------- two's complement numbers ----------\n");
+  int numb = 7;
+  printf("numb: %d, tow's complement negative numb: %d\n", numb, ~numb + 1);
+
   return 0;
 }
 
@@ -428,9 +432,8 @@ unsigned int unpack_values(unsigned int packed_value) {
 
   mask = 0xFF;
   res = 0;
-  for (i = 0; i < 4; i++) {
+  for (i = 0; i < 4; i++)
     printb((packed_value >> (8 * i)) & mask);
-  }
 
   return mask;
 }
