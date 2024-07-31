@@ -358,7 +358,7 @@ void show_permissions(unsigned int permissions) {
   }
 }
 
-// Align a number to the nearest lower power of two for memory allocation.
+// Align a number to the nearest higher power of two.
 unsigned int align_to_power_of_two(unsigned int num) {
   printf("\n---------- align_to_power_of_two ----------\n");
   printf("num\t: %d\n", num);
@@ -371,10 +371,11 @@ unsigned int align_to_power_of_two(unsigned int num) {
   num |= num >> 4;
   num |= num >> 8;
   num |= num >> 16;
+  num++;
 
-  printf("aligned\t: %d\n", num + 1);
+  printf("aligned\t: %d\n", num);
 
-  return num + 1;
+  return num;
 }
 
 unsigned int encrypt(int data, int key) {
