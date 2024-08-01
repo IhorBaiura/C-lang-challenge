@@ -31,8 +31,12 @@ int main(int argc, char *argv[]) {
 
   printf("\n----------- invert ---------\n");
   invert(0xFA, 4, 3);
+
   printf("\n----------- invert improved ---------\n");
   invert_imp(0xFA, 4, 3);
+
+  printf("\n----------- setbits ---------\n");
+  setbits(0xFA, 4, 3, 0xD3);
 
   return 0;
 }
@@ -40,6 +44,24 @@ int main(int argc, char *argv[]) {
 /* getbits: get n bits from position p */
 unsigned getbits(unsigned x, int p, int n) {
   return (x >> (p + 1 - n)) & ~(~0 << n);
+}
+
+unsigned setbits(unsigned x, int p, int n, int y) {
+  unsigned char shift = p + 1 - n;
+  unsigned char mask = ~(~0 << n);
+  printf("x: \t\t\t\t\t");
+  printBits(x);
+
+  printf("x & ~(~(~0 << n) << shift): \t\t");
+  printBits(x & ~(~(~0 << n) << shift));
+
+  printf("(y & ~(~0 << n)) << shift: \t\t");
+  printBits((y & ~(~0 << n)) << shift);
+
+  printf("res: \t\t\t\t\t");
+  printBits(x & ~(mask << shift) | (y & mask) << shift);
+
+  return x & ~(mask << shift) | (y & mask) << shift;
 }
 
 unsigned invert(unsigned x, int p, int n) {
