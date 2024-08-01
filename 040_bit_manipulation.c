@@ -25,7 +25,7 @@ unsigned getbits(unsigned x, int p, int n);
 unsigned setbits(unsigned x, int p, int n, int y);
 unsigned invert(unsigned x, int p, int n);
 unsigned invert_imp(unsigned x, int p, int n);
-unsigned rightrot(unsigned x, int p);
+unsigned rightrot(unsigned x, int n);
 
 int main(int argc, char *argv[]) {
 
@@ -38,6 +38,9 @@ int main(int argc, char *argv[]) {
   printf("\n----------- setbits ---------\n");
   setbits(0xFA, 4, 3, 0xD3);
 
+  printf("\n----------- rightrot ---------\n");
+  rightrot(0xFA, 6);
+
   return 0;
 }
 
@@ -48,7 +51,8 @@ unsigned getbits(unsigned x, int p, int n) {
 
 unsigned setbits(unsigned x, int p, int n, int y) {
   unsigned char shift = p + 1 - n;
-  unsigned char mask = ~(~0 << n);
+  unsigned mask = ~(~0 << n);
+
   printf("x: \t\t\t\t\t");
   printBits(x);
 
@@ -59,9 +63,9 @@ unsigned setbits(unsigned x, int p, int n, int y) {
   printBits((y & ~(~0 << n)) << shift);
 
   printf("res: \t\t\t\t\t");
-  printBits(x & ~(mask << shift) | (y & mask) << shift);
+  printBits((x & ~(mask << shift)) | (y & mask) << shift);
 
-  return x & ~(mask << shift) | (y & mask) << shift;
+  return (x & ~(mask << shift)) | (y & mask) << shift;
 }
 
 unsigned invert(unsigned x, int p, int n) {
@@ -95,6 +99,16 @@ unsigned invert_imp(unsigned x, int p, int n) {
   printBits(x ^ mask);
 
   return x ^ mask;
+}
+
+unsigned rightrot(unsigned x, int n) {
+  printf("x: \t\t\t\t\t");
+  printBits(x);
+
+  printf("x & ~(~(~0 << n) << shift): \t\t");
+  printBits((x & ~(~0 << n)) << (sizeof(unsigned) * 8 - n) | x >> n);
+
+  return (x & ~(~0 << n)) << (sizeof(unsigned) * 8 - n) | x >> n;
 }
 
 void printBits(unsigned int num) {
