@@ -20,26 +20,23 @@
 enum SIGN { NEGATIVE, POSITIVE };
 
 void printBits(unsigned int num);
+void printRes(char title[], unsigned input, unsigned res);
 
 unsigned getbits(unsigned x, int p, int n);
 unsigned setbits(unsigned x, int p, int n, int y);
 unsigned invert(unsigned x, int p, int n);
 unsigned invert_imp(unsigned x, int p, int n);
 unsigned rightrot(unsigned x, int n);
+unsigned rightrot_imp(unsigned x, int n);
 
 int main(int argc, char *argv[]) {
-
-  printf("\n----------- invert ---------\n");
-  invert(0xFA, 4, 3);
-
-  printf("\n----------- invert improved ---------\n");
-  invert_imp(0xFA, 4, 3);
-
-  printf("\n----------- setbits ---------\n");
-  setbits(0xFA, 4, 3, 0xD3);
-
-  printf("\n----------- rightrot ---------\n");
-  rightrot(0xFA, 6);
+  printRes("invert invert(0xFA, 4, 3)", 0xFA, invert(0xFA, 4, 3));
+  printRes("invert improved invert_imp(0xFA, 4, 3)", 0xFA,
+           invert_imp(0xFA, 4, 3));
+  printRes("setbits setbits(0xFA, 4, 3, 0xD3)", 0xFA,
+           setbits(0xFA, 4, 3, 0xD3));
+  printRes("rightrot rightrot(0xFA, 6)", 0xFA, rightrot(0xFA, 6));
+  printRes("rightrot_imp rightrot_imp(0xFA, 6)", 0xFA, rightrot_imp(0xFA, 6));
 
   return 0;
 }
@@ -53,37 +50,12 @@ unsigned setbits(unsigned x, int p, int n, int y) {
   unsigned char shift = p + 1 - n;
   unsigned mask = ~(~0 << n);
 
-  printf("x: \t\t\t\t\t");
-  printBits(x);
-
-  printf("x & ~(~(~0 << n) << shift): \t\t");
-  printBits(x & ~(~(~0 << n) << shift));
-
-  printf("(y & ~(~0 << n)) << shift: \t\t");
-  printBits((y & ~(~0 << n)) << shift);
-
-  printf("res: \t\t\t\t\t");
-  printBits((x & ~(mask << shift)) | (y & mask) << shift);
-
   return (x & ~(mask << shift)) | (y & mask) << shift;
 }
 
 unsigned invert(unsigned x, int p, int n) {
   unsigned char shift = p + 1 - n;
   unsigned char shift_l = sizeof(unsigned) * 8 - n;
-
-  printf("shift: \t\t\t\t\t%d\n", shift);
-
-  printf("x: \t\t\t\t\t");
-  printBits(x);
-
-  printf("x & ~(~(~0 << n) << shift): \t\t");
-  printBits(x & ~(~(~0 << n) << shift));
-
-  printf("res: \t\t\t\t\t");
-  printBits(x & ~(~(~0 << n) << shift) |
-            (~(x >> shift & ~(~0 << n)) << (sizeof(unsigned) * 8 - n) >>
-             (sizeof(unsigned) * 8 - n - shift)));
 
   return x & ~(~(~0 << n) << shift) |
          (~(x >> shift & ~(~0 << n)) << shift_l >> (shift_l - shift));
@@ -92,23 +64,18 @@ unsigned invert(unsigned x, int p, int n) {
 unsigned invert_imp(unsigned x, int p, int n) {
   unsigned mask = ~(~0 << n) << (p + 1 - n);
 
-  printf("~(~0 << n) << (p + 1 - n): \t\t");
-  printBits(~(~0 << n) << (p + 1 - n));
-
-  printf("res: \t\t\t\t\t");
-  printBits(x ^ mask);
-
   return x ^ mask;
 }
 
 unsigned rightrot(unsigned x, int n) {
-  printf("x: \t\t\t\t\t");
-  printBits(x);
-
-  printf("x & ~(~(~0 << n) << shift): \t\t");
-  printBits((x & ~(~0 << n)) << (sizeof(unsigned) * 8 - n) | x >> n);
-
   return (x & ~(~0 << n)) << (sizeof(unsigned) * 8 - n) | x >> n;
+}
+
+unsigned rightrot_imp(unsigned x, int n) {
+  int bits = sizeof(x) * 8;
+  n = n % bits; // align n to size of x (case n > bits)
+
+  return (x >> n) | (x << (bits - n));
 }
 
 void printBits(unsigned int num) {
@@ -121,4 +88,14 @@ void printBits(unsigned int num) {
       putchar(' ');
   }
   printf("\n");
+}
+
+void printRes(char title[], unsigned input, unsigned res) {
+  printf("\n----------- %s ---------\n", title);
+
+  printf("x: \t\t\t\t\t");
+  printBits(input);
+
+  printf("res: \t\t\t\t\t");
+  printBits(res);
 }
