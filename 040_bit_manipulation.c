@@ -17,8 +17,6 @@
 
 #define BITE_SIZE 8
 
-enum SIGN { NEGATIVE, POSITIVE };
-
 void printBits(unsigned int num);
 void printRes(char title[], unsigned input, unsigned res);
 
@@ -29,6 +27,8 @@ unsigned invert_imp(unsigned x, int p, int n);
 unsigned rightrot(unsigned x, int n);
 unsigned rightrot_imp(unsigned x, int n);
 
+int bitcount_imp(unsigned x);
+
 int main(int argc, char *argv[]) {
   printRes("invert invert(0xFA, 4, 3)", 0xFA, invert(0xFA, 4, 3));
   printRes("invert improved invert_imp(0xFA, 4, 3)", 0xFA,
@@ -37,6 +37,11 @@ int main(int argc, char *argv[]) {
            setbits(0xFA, 4, 3, 0xD3));
   printRes("rightrot rightrot(0xFA, 6)", 0xFA, rightrot(0xFA, 6));
   printRes("rightrot_imp rightrot_imp(0xFA, 6)", 0xFA, rightrot_imp(0xFA, 6));
+
+  printf("\n----------- bitcount_imp ---------\n");
+  printf("x: \t\t\t\t\t");
+  printBits(0xFF);
+  printf("res: \t\t\t\t\t%d\n", bitcount_imp(0xFF));
 
   return 0;
 }
@@ -55,7 +60,7 @@ unsigned setbits(unsigned x, int p, int n, int y) {
 
 unsigned invert(unsigned x, int p, int n) {
   unsigned char shift = p + 1 - n;
-  unsigned char shift_l = sizeof(unsigned) * 8 - n;
+  unsigned char shift_l = sizeof(unsigned) * BITE_SIZE - n;
 
   return x & ~(~(~0 << n) << shift) |
          (~(x >> shift & ~(~0 << n)) << shift_l >> (shift_l - shift));
@@ -68,18 +73,34 @@ unsigned invert_imp(unsigned x, int p, int n) {
 }
 
 unsigned rightrot(unsigned x, int n) {
-  return (x & ~(~0 << n)) << (sizeof(unsigned) * 8 - n) | x >> n;
+  return (x & ~(~0 << n)) << (sizeof(unsigned) * BITE_SIZE - n) | x >> n;
 }
 
 unsigned rightrot_imp(unsigned x, int n) {
-  int bits = sizeof(x) * 8;
+  int bits = sizeof(x) * BITE_SIZE;
   n = n % bits; // align n to size of x (case n > bits)
 
   return (x >> n) | (x << (bits - n));
 }
 
+/* bitcount: count 1 bits in x */
+int bitcount(unsigned x) {
+  int b;
+  for (b = 0; x != 0; x >>= 1)
+    if (x & 01)
+      b++;
+  return b;
+}
+
+int bitcount_imp(unsigned x) {
+  int i;
+  for (i = 0; x != 0; i++)
+    x &= (x - 1);
+  return i;
+}
+
 void printBits(unsigned int num) {
-  int bits = sizeof(num) * 8;
+  int bits = sizeof(num) * BITE_SIZE;
   for (int i = bits - 1; i >= 0; i--) {
     unsigned int bit = (num >> i) & 1;
     printf("%u", bit);
