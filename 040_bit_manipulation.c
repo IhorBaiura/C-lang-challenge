@@ -24,12 +24,15 @@ void printBits(unsigned int num);
 unsigned getbits(unsigned x, int p, int n);
 unsigned setbits(unsigned x, int p, int n, int y);
 unsigned invert(unsigned x, int p, int n);
+unsigned invert_imp(unsigned x, int p, int n);
 unsigned rightrot(unsigned x, int p);
 
 int main(int argc, char *argv[]) {
 
   printf("\n----------- invert ---------\n");
   invert(0xFA, 4, 3);
+  printf("\n----------- invert improved ---------\n");
+  invert_imp(0xFA, 4, 3);
 
   return 0;
 }
@@ -58,6 +61,18 @@ unsigned invert(unsigned x, int p, int n) {
 
   return x & ~(~(~0 << n) << shift) |
          (~(x >> shift & ~(~0 << n)) << shift_l >> (shift_l - shift));
+}
+
+unsigned invert_imp(unsigned x, int p, int n) {
+  unsigned mask = ~(~0 << n) << (p + 1 - n);
+
+  printf("~(~0 << n) << (p + 1 - n): \t\t");
+  printBits(~(~0 << n) << (p + 1 - n));
+
+  printf("res: \t\t\t\t\t");
+  printBits(x ^ mask);
+
+  return x ^ mask;
 }
 
 void printBits(unsigned int num) {

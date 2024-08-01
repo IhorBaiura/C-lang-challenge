@@ -26,6 +26,7 @@ enum PERMISSIONS {
 
 void printb(int num);
 void printb_bitwice(int num);
+void printBits(unsigned int num);
 
 unsigned int bit_masking(unsigned int num, unsigned int mask);
 unsigned int set_bits_to_zero(unsigned int num, unsigned int mask);
@@ -225,6 +226,18 @@ void printb(signed int num) {
     if ((j + 1) % 4 == 0 && j != sizeof(unsigned int) * BITE_SIZE - 1)
       printf(" ");
     printf("%d", binary[j]);
+  }
+  printf("\n");
+}
+
+void printBits(unsigned int num) {
+  int bits = sizeof(num) * 8;
+  for (int i = bits - 1; i >= 0; i--) {
+    unsigned int bit = (num >> i) & 1;
+    printf("%u", bit);
+
+    if (i % 4 == 0)
+      putchar(' ');
   }
   printf("\n");
 }
