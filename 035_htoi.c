@@ -52,11 +52,10 @@ long htoi(char str[]) {
 }
 
 char _ishexdigit(char c) {
-  if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') ||
-      (c >= 'A' && c <= 'F'))
-    return 1;
-
-  return 0;
+  return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') ||
+                 (c >= 'A' && c <= 'F')
+             ? 1
+             : 0;
 }
 
 long _strlen(char str[]) {

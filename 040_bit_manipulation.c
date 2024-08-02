@@ -11,6 +11,10 @@
  * Exercise 2-8. Write a function rightrot(x,n) that returns the value of the
  * integer x rotated to the right by n bit positions.
  *
+ * Exercise 2-9. In a two’s complement number system, x &= (x-1) deletes the
+ * rightmost 1-bit in x. Explain why. Use this observation to write a faster
+ * version of bitcount.
+ *
  */
 
 #include <stdio.h>
