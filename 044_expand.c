@@ -68,4 +68,28 @@ symbol_type get_symbol_type(char c) {
   return OTHER_SYMBOL;
 }
 
-void expand(const char s1[], char s2[]) {}
+void expand(const char s1[], char s2[]) {
+  char range_start, range_end, in_range;
+  int i, j, is_error;
+
+  j = range_start = range_end = in_range = 0;
+  is_error = 0;
+  for (i = 0; s1[i] != '\0' && !is_error; i++)
+    switch (get_symbol_type(s1[i])) {
+    case DASH_SYMBOL:
+      if (!in_range) {
+        s2[j++] = s1[i];
+        break;
+      }
+
+    case LOWER_LETTER:
+    case UPPER_LETTER:
+    case NUMBER:
+      range_start = s1[i];
+      break;
+    case OTHER_SYMBOL:
+    default:
+      is_error = -1;
+      break;
+    }
+}
