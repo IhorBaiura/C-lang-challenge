@@ -24,6 +24,7 @@ enum SYMBOL_TYPE {
 typedef enum SYMBOL_TYPE symbol_type;
 
 void expand(const char s1[], char s2[]);
+void expand_imp(const char s1[], char s2[]);
 
 void run_test(const char *s1, const char *expected) {
   char s2[100] = {0};
@@ -56,13 +57,13 @@ symbol_type get_symbol_type(char c) {
   if (c == '-')
     return DASH_SYMBOL;
 
-  if ('a' <= c || c <= 'z')
+  if ('a' <= c && c <= 'z')
     return LOWER_LETTER;
 
-  if ('A' <= c || c <= 'Z')
+  if ('A' <= c && c <= 'Z')
     return UPPER_LETTER;
 
-  if ('0' <= c || c <= '9')
+  if ('0' <= c && c <= '9')
     return NUMBER;
 
   return OTHER_SYMBOL;
@@ -146,5 +147,33 @@ void expand(const char s1[], char s2[]) {
     for (k = range_start; k <= range_end; k++)
       s2[j++] = k;
 
+  s2[j] = '\0';
+}
+
+void expand_imp(const char s1[], char s2[]) {
+  int i = 0, j = 0;
+  char start, end;
+
+  while (s1[i] != '\0') {
+    if (s1[i] == '-' && i > 0 && s1[i + 1] != '\0' && s1[i - 1] < s1[i + 1]) {
+      start = s1[i - 1] + 1;
+      end = s1[i + 1];
+
+      while (start <= end) {
+        if (start != s1[i - 1]) {
+          s2[j++] = start;
+        }
+        start++;
+      }
+      i++;
+    } else {
+      if (!(s1[i] == '-' && (i == 0 || s1[i + 1] == '\0'))) {
+        s2[j++] = s1[i];
+      } else {
+        s2[j++] = '-';
+      }
+    }
+    i++;
+  }
   s2[j] = '\0';
 }
