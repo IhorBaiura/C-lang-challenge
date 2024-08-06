@@ -17,6 +17,7 @@
 #define NUMBERS "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 void itob(int n, char s[], int b);
+void itob_old(int n, char s[], int b);
 void run_test(int n, int b, const char *expected);
 
 int main() {
@@ -72,7 +73,34 @@ void reverse(char s[]) {
   }
 }
 
+// solution with using unsigned int for representing int min numb
+// intp base of 2 pow x
 void itob(int n, char s[], int b) {
+  int i = 0;
+  unsigned int un;
+  const char num[] = NUMBERS;
+
+  if (b > 36 || b < 2) {
+    printf("%s The base is out of the range [2; 36].\n%s", RED, WHITE);
+    return;
+  }
+
+  un = n == INT_MIN ? (unsigned int)INT_MAX + 1 : ((n < 0) ? -n : n);
+
+  do {
+    s[i++] = num[un % b];
+  } while ((un /= b) > 0);
+
+  if (n < 0)
+    s[i++] = '-';
+  s[i] = '\0';
+
+  reverse(s);
+}
+
+// solution with using carrying for representing int min numb
+// intp base of 2 pow x
+void itob_old(int n, char s[], int b) {
   int i, sign, carry;
   char num[] = NUMBERS;
 
