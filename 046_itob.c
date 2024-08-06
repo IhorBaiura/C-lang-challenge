@@ -20,30 +20,30 @@ void itob(int n, char s[], int b);
 void run_test(int n, int b, const char *expected);
 
 int main() {
-  // run_test(0, 2, "0");
-  // run_test(5, 2, "101");
-  // run_test(-5, 2, "-101");
-  // run_test(123, 8, "173");
-  // run_test(-123, 8, "-173");
-  // run_test(123, 10, "123");
-  // run_test(-123, 10, "-123");
-  // run_test(255, 16, "FF");
-  // run_test(-255, 16, "-FF");
-  // run_test(735, 16, "2DF");
-  // run_test(1024, 2, "10000000000");
-  // run_test(4095, 16, "FFF");
-  // run_test(-2147483648, 16, "-80000000");
-  // run_test(2147483647, 16, "7FFFFFFF");
-  // run_test(-2147483648, 10, "-2147483648");
-  // run_test(2147483647, 10, "2147483647");
+  run_test(0, 2, "0");
+  run_test(5, 2, "101");
+  run_test(-5, 2, "-101");
+  run_test(123, 8, "173");
+  run_test(-123, 8, "-173");
+  run_test(123, 10, "123");
+  run_test(-123, 10, "-123");
+  run_test(255, 16, "FF");
+  run_test(-255, 16, "-FF");
+  run_test(735, 16, "2DF");
+  run_test(1024, 2, "10000000000");
+  run_test(4095, 16, "FFF");
+  run_test(-2147483648, 16, "-80000000");
+  run_test(2147483647, 16, "7FFFFFFF");
+  run_test(-2147483648, 10, "-2147483648");
+  run_test(2147483647, 10, "2147483647");
   run_test(-2147483648, 2, "-10000000000000000000000000000000");
-  // run_test(-2147483648, 4, "-2000000000000000");
-  // run_test(-2147483648, 8, "-20000000000");
-  // run_test(-2147483648, 32, "-2000000");
-  // run_test(75, 5, "300");
-  // run_test(-75, 7, "-135");
-  // run_test(74765, 27, "3LF2");
-  // run_test(74765, 36, "1LOT");
+  run_test(-2147483648, 4, "-2000000000000000");
+  run_test(-2147483648, 8, "-20000000000");
+  run_test(-2147483648, 32, "-2000000");
+  run_test(75, 5, "300");
+  run_test(-75, 7, "-135");
+  run_test(74765, 27, "3LF2");
+  run_test(74765, 36, "1LOT");
 
   // run_test(5, 1, "101");
 
@@ -73,7 +73,7 @@ void reverse(char s[]) {
 }
 
 void itob(int n, char s[], int b) {
-  int i, sign, cary;
+  int i, sign, carry;
   char num[] = NUMBERS;
 
   if (b > 36 || b < 2) {
@@ -81,26 +81,28 @@ void itob(int n, char s[], int b) {
   }
 
   i = 0;
-  cary = 0;
+  carry = 0;
   sign = n;
 
   if (n == INT_MIN) {
     n = -(n + 1);
     s[i++] = num[(n % b + 1) % b];
-    cary = (n % b + 1) / b;
+    carry = (n % b + 1) / b;
     n /= b;
   } else if (sign < 0) {
     n = -n;
   }
 
   do {
-    if (cary != 0) {
-      s[i++] = num[(n % b + cary) % b];
-      cary = (n % b + cary) / b;
+    if (carry != 0) {
+      s[i++] = num[(n % b + carry) % b];
+      carry = (n % b + carry) / b;
     } else
       s[i++] = num[n % b];
   } while ((n /= b) > 0);
 
+  if (carry != 0)
+    s[i++] = num[carry];
   if (sign < 0)
     s[i++] = '-';
   s[i] = '\0';
