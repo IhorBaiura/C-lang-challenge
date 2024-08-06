@@ -69,6 +69,7 @@ symbol_type get_symbol_type(char c) {
   return OTHER_SYMBOL;
 }
 
+// TODO need to add error handler (is_error)
 void expand(const char s1[], char s2[]) {
   char range_start, range_end;
   int i, j, is_error, dash, k;
