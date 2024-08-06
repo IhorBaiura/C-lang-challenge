@@ -53,6 +53,9 @@ int main() {
 }
 
 symbol_type get_symbol_type(char c) {
+  if (c == '-')
+    return DASH_SYMBOL;
+
   if ('a' <= c || c <= 'z')
     return LOWER_LETTER;
 
@@ -62,34 +65,86 @@ symbol_type get_symbol_type(char c) {
   if ('0' <= c || c <= '9')
     return NUMBER;
 
-  if (c == '-')
-    return DASH_SYMBOL;
-
   return OTHER_SYMBOL;
 }
 
 void expand(const char s1[], char s2[]) {
-  char range_start, range_end, in_range;
-  int i, j, is_error;
+  char range_start, range_end;
+  int i, j, is_error, dash, k;
 
-  j = range_start = range_end = in_range = 0;
-  is_error = 0;
+  j = range_start = range_end = 0;
+  is_error = dash = 0;
   for (i = 0; s1[i] != '\0' && !is_error; i++)
     switch (get_symbol_type(s1[i])) {
     case DASH_SYMBOL:
-      if (!in_range) {
+      if (!range_start) {
         s2[j++] = s1[i];
         break;
       }
 
+      if (range_end && s1[i + 1] == '\0') {
+        for (k = range_start; k <= range_end; k++)
+          s2[j++] = k;
+
+        s2[j++] = s1[i];
+        range_start = range_end = 0;
+        break;
+      }
+
+      dash = 1;
+      break;
     case LOWER_LETTER:
     case UPPER_LETTER:
     case NUMBER:
-      range_start = s1[i];
+      if (!range_start) {
+        range_start = s1[i];
+        break;
+      }
+
+      if (range_start && dash) {
+        if (range_start > s1[i]) {
+          s2[j++] = range_start;
+          s2[j++] = '-';
+          s2[j++] = s1[i];
+
+          range_start = 0;
+          break;
+        }
+
+        range_end = s1[i];
+        dash = 0;
+        break;
+      }
+
+      if (range_start && !dash && !range_end) {
+        s2[j++] = range_start;
+        s2[j++] = s1[i];
+        range_start = 0;
+        break;
+      }
+
+      if (range_start && range_end && !dash) {
+        if (range_start != s1[i]) {
+          for (k = range_start; k <= range_end; k++)
+            s2[j++] = k;
+          range_start = s1[i];
+        }
+
+        break;
+      }
+
       break;
     case OTHER_SYMBOL:
     default:
       is_error = -1;
       break;
     }
+
+  if (range_start && !range_end)
+    s2[j++] = range_start;
+  if (range_start && range_end)
+    for (k = range_start; k <= range_end; k++)
+      s2[j++] = k;
+
+  s2[j] = '\0';
 }
