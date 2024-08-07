@@ -28,15 +28,23 @@
 
 void itoa(int n, char s[]);
 void itoa_imp(int n, char s[]);
+void itoa_ext(int n, char s[], int min_width);
 
 void run_test(int n, const char *expected) {
   char s[20], res;
   itoa_imp(n, s);
   res = strcmp(s, expected) == 0;
-  printf(res ? GREEN : RED);
-  printf("itoa(%d) -> \"%s\" (Expected: \"%s\") - %s\n", n, s, expected,
-         res ? "PASS" : "FAIL");
-  printf(WHITE);
+  printf("%sitoa(%d) -> \"%s\" (Expected: \"%s\") - %s%s\n", res ? GREEN : RED,
+         n, s, expected, res ? "PASS" : "FAIL", WHITE);
+}
+
+void run_test_ext(int n, int min_width, const char *expected) {
+  char s[100], res;
+  itoa_ext(n, s, min_width);
+  res = strcmp(s, expected) == 0;
+  printf("%sitoa_ext(%d, min_width %d) -> \"%s\" (Expected: \"%s\") - %s%s\n",
+         res ? GREEN : RED, n, min_width, s, expected, res ? "PASS" : "FAIL",
+         WHITE);
 }
 
 int main() {
@@ -52,6 +60,17 @@ int main() {
   run_test(-1, "-1");
 
   printf("int: %ld\n", sizeof(int) * 8);
+
+  run_test_ext(123, 3, "123");
+  run_test_ext(123, 5, "  123");
+  run_test_ext(-456, 4, "-456");
+  run_test_ext(-78, 6, "   -78");
+  run_test_ext(0, 4, "   0");
+  run_test_ext(INT_MIN, 12, " -2147483648"); // Assuming 32-bit int
+  run_test_ext(INT_MAX, 10, "2147483647");   // Assuming 32-bit int
+  run_test_ext(987654321, 5, "987654321");
+  run_test_ext(-12, 3, "-12");
+  run_test_ext(7, 4, "   7");
 
   return 0;
 }
@@ -104,6 +123,26 @@ void itoa_imp(int n, char s[]) {
 
   if (sign < 0)
     s[i++] = '-';
+  s[i] = '\0';
+
+  reverse(s);
+}
+
+void itoa_ext(int n, char s[], int min_width) {
+  int i, sign;
+
+  sign = n;
+  i = 0;
+  do {
+    s[i++] = abs(n % 10) + '0';
+  } while ((n /= 10) != 0);
+
+  if (sign < 0)
+    s[i++] = '-';
+
+  while ((i + 1) <= min_width)
+    s[i++] = ' ';
+
   s[i] = '\0';
 
   reverse(s);
