@@ -5,6 +5,10 @@
  * equal to -(2wordsize−1). Explain why not. Modify it to print that value
  * correctly, regardless of the machine on which it runs.
  *
+ * Exercise 3-6. Write a version of itoa that accepts three arguments instead
+ * of two. The third argument is a minimum field width; the converted number
+ * must be padded with blanks on the left if necessary to make it wide enough.
+ *
  */
 
 #include <limits.h>
@@ -20,11 +24,14 @@
 #define CYAN "\033[36m"
 #define WHITE "\033[37m"
 
+#define abs(x) ((x) < 0 ? -(x) : (x))
+
 void itoa(int n, char s[]);
+void itoa_imp(int n, char s[]);
 
 void run_test(int n, const char *expected) {
   char s[20], res;
-  itoa(n, s);
+  itoa_imp(n, s);
   res = strcmp(s, expected) == 0;
   printf(res ? GREEN : RED);
   printf("itoa(%d) -> \"%s\" (Expected: \"%s\") - %s\n", n, s, expected,
@@ -78,6 +85,22 @@ void itoa(int n, char s[]) {
   do
     s[i++] = n % 10 + '0';
   while ((n /= 10) > 0);
+
+  if (sign < 0)
+    s[i++] = '-';
+  s[i] = '\0';
+
+  reverse(s);
+}
+
+void itoa_imp(int n, char s[]) {
+  int i, sign;
+
+  sign = n;
+  i = 0;
+  do {
+    s[i++] = abs(n % 10) + '0';
+  } while ((n /= 10) != 0);
 
   if (sign < 0)
     s[i++] = '-';
