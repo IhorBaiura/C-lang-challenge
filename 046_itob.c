@@ -14,9 +14,12 @@
 #define GREEN "\033[32m"
 #define WHITE "\033[37m"
 
+#define abs(x) ((x) < 0 ? -(x) : (x))
+
 #define NUMBERS "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 void itob(int n, char s[], int b);
+void itob_imp(int n, char s[], int b);
 void itob_old(int n, char s[], int b);
 void run_test(int n, int b, const char *expected);
 
@@ -53,7 +56,7 @@ int main() {
 
 void run_test(int n, int b, const char *expected) {
   char s[100], res;
-  itob(n, s, b);
+  itob_imp(n, s, b);
 
   res = strcmp(s, expected) == 0;
 
@@ -71,6 +74,28 @@ void reverse(char s[]) {
     s[j] = s[i - j];
     s[i - j] = c;
   }
+}
+
+void itob_imp(int n, char s[], int b) {
+  int i = 0, sign;
+  const char num[] = NUMBERS;
+
+  if (b > 36 || b < 2) {
+    printf("%s The base is out of the range [2; 36].\n%s", RED, WHITE);
+    return;
+  }
+
+  sign = n;
+
+  do {
+    s[i++] = num[abs(n % b)];
+  } while ((n /= b) != 0);
+
+  if (sign < 0)
+    s[i++] = '-';
+  s[i] = '\0';
+
+  reverse(s);
 }
 
 // solution with using unsigned int for representing int min numb
