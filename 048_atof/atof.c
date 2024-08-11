@@ -14,9 +14,10 @@
 
 /* atof: convert string s to double */
 double _atof(const char s[]) {
-  double val, power;
-  int i, sign, k, exp, exp_sign;
-  char akk[SCHAR_MAX];
+  double val, power, exp;
+  int i, sign, k;
+  int exp_sign = 1;
+  char exp_val[SCHAR_MAX] = "1";
 
   for (i = 0; isspace(s[i]); i++) /* skip white space */
     ;
@@ -32,14 +33,20 @@ double _atof(const char s[]) {
     power *= 10.0;
   }
   if (s[i] == 'e' || s[i] == 'E') {
-    ++i;
-    exp_sign = (s[i++] == '-') ? -1 : 1;
-    for (k = 0; isdigit(s[i]); i++) {
-      akk[k++] = s[i];
+    i++;
+
+    if (s[i] == '-') {
+      exp_sign = -1;
+      i++;
     }
-    akk[k] = '\0';
-    exp = pow(10, atoi(s));
-    power = exp_sign ? power * exp : power / exp;
+
+    for (k = 0; isdigit(s[i]); i++) {
+      exp_val[k++] = s[i];
+    }
+    exp_val[k] = '\0';
+
+    exp = pow(10, atoi(exp_val));
+    power = exp_sign > 0 ? power / exp : power * exp;
   }
   return sign * val / power;
 }
