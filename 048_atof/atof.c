@@ -8,13 +8,16 @@
  */
 
 #include <ctype.h>
+#include <limits.h>
 #include <math.h>
 #include <stdlib.h>
 
 /* atof: convert string s to double */
-double _atof(char s[]) {
+double _atof(const char s[]) {
   double val, power;
-  int i, sign, k, exp;
+  int i, sign, k, exp, exp_sign;
+  char akk[SCHAR_MAX];
+
   for (i = 0; isspace(s[i]); i++) /* skip white space */
     ;
   sign = (s[i] == '-') ? -1 : 1;
@@ -30,23 +33,13 @@ double _atof(char s[]) {
   }
   if (s[i] == 'e' || s[i] == 'E') {
     ++i;
-    if (s[i] == '-') {
-      while (isdigit(s[i])) {
-        s[k++] = s[i];
-      }
-      if (k > 0)
-        s[k] = '\0';
-      exp = pow(10, atoi(s));
-      power /= exp;
-    } else if (s[i] == '+') {
-      while (isdigit(s[i])) {
-        s[k++] = s[i];
-      }
-      if (k > 0)
-        s[k] = '\0';
-      exp = pow(10, atoi(s));
-      power *= exp;
+    exp_sign = (s[i++] == '-') ? -1 : 1;
+    for (k = 0; isdigit(s[i]); i++) {
+      akk[k++] = s[i];
     }
+    akk[k] = '\0';
+    exp = pow(10, atoi(s));
+    power = exp_sign ? power * exp : power / exp;
   }
   return sign * val / power;
 }
