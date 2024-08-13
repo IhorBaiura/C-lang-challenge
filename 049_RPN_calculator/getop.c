@@ -1,4 +1,11 @@
 #include <ctype.h>
+/*
+ *
+ * Exercise 4-3. Given the basic framework, it’s straightforward to extend the
+ * calculator. Add the modulus (%) operator and provisions for negative numbers.
+ *
+ */
+
 #include <stdio.h>
 
 #define NUMBER '0' /* signal that a number was found */
