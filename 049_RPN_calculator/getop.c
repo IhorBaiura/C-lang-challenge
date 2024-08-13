@@ -12,12 +12,25 @@ int getop(char s[]) {
   while ((s[0] = c = getch()) == ' ' || c == '\t')
     ;
   s[1] = '\0';
+
+  if (c == '-') {
+    if (isdigit(c = getch())) {
+      s[i = 1] = c;
+    } else {
+      ungetch(c);
+      return '-';
+    }
+  } else {
+    i = 0;
+  }
+
   if (!isdigit(c) && c != '.')
     return c; /* not a number */
-  i = 0;
+
   if (isdigit(c)) /* collect integer part */
     while (isdigit(s[++i] = c = getch()))
       ;
+
   if (c == '.') /* collect fraction part */
     while (isdigit(s[++i] = c = getch()))
       ;
