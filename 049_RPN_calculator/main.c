@@ -1,3 +1,10 @@
+/*
+ *
+ * Exercise 4-3. Given the basic framework, it’s straightforward to extend the
+ * calculator. Add the modulus (%) operator and provisions for negative numbers.
+ *
+ */
+
 #include <stdio.h>
 #include <stdlib.h> /* for atof() */
 
@@ -32,6 +39,13 @@ int main(int argc, char *argv[]) {
       op2 = pop();
       if (op2 != 0.0)
         push(pop() / op2);
+      else
+        printf("error: zero divisor\n");
+      break;
+    case '%':
+      op2 = pop();
+      if (op2 != 0.0)
+        push((int)pop() % (int)op2);
       else
         printf("error: zero divisor\n");
       break;
