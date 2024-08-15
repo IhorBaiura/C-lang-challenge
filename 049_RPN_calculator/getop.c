@@ -14,6 +14,7 @@
 #define VAR 'V'
 #define ASSIGN 'A'
 #define RESULT 'R'
+#define CLEAR 'C'
 
 int getch(void);
 void ungetch(int);
@@ -24,6 +25,16 @@ int getop(char s[]) {
   while ((s[0] = c = getch()) == ' ' || c == '\t')
     ;
   s[1] = '\0';
+
+  // Check if it's a command to print the most recent value (e.g., "R")
+  if (c == 'R') {
+    return RESULT; // Return 'R' as the command to print the last value
+  }
+
+  // Check if it's a command to clear stack
+  if (c == 'C') {
+    return CLEAR; // Return 'C' as the command to clear stack
+  }
 
   // Check if it's a function name
   if (isalpha(c)) {
@@ -50,11 +61,6 @@ int getop(char s[]) {
     }
 
     return MATHOP;
-  }
-
-  // Check if it's a command to print the most recent value (e.g., "R")
-  if (c == 'R') {
-    return RESULT; // Return 'R' as the command to print the last value
   }
 
   // Check if it's a number or negative sign

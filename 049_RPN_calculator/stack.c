@@ -48,4 +48,4 @@ void swap(void) {
   val[sp] = tmp;
 }
 
-void clear(void) { sp = 0; }
+void clears(void) { sp = 0; }

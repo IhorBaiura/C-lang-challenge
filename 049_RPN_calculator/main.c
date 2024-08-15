@@ -24,6 +24,7 @@
 #define VAR 'V'
 #define ASSIGN 'A'
 #define RESULT 'R'
+#define CLEAR 'C'
 
 int getop(char[]);
 void push(double);
@@ -33,6 +34,7 @@ void putv(char name, double value);
 double getv(char name);
 void addlv(double val);
 void printlv();
+void clears(void);
 
 /* reverse Polish calculator */
 int main(int argc, char *argv[]) {
@@ -59,7 +61,12 @@ int main(int argc, char *argv[]) {
       push(pop() + pop());
       break;
     case RESULT:
+      printf("RESULT\n");
       addlv(pop());
+      break;
+    case CLEAR:
+      printf("CLEAR\n");
+      clears();
       break;
     case '*':
       push(pop() * pop());
