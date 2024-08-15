@@ -7,16 +7,20 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 
 #define NUMBER '0' /* signal that a number was found */
 #define MATHOP 'M'
+#define VAR 'V'
+#define ASSIGN 'A'
+#define RESULT 'R'
 
 int getch(void);
 void ungetch(int);
 
 /* getop: get next operator or numeric operand */
 int getop(char s[]) {
-  int i, c;
+  int i, c, t;
   while ((s[0] = c = getch()) == ' ' || c == '\t')
     ;
   s[1] = '\0';
@@ -29,7 +33,28 @@ int getop(char s[]) {
     s[i - 1] = '\0';
     // push back the last character that's not part of the function name
     ungetch(c);
+
+    // Check if it's a single-letter variable
+    if (strlen(s) == 1 && s[0] >= 'a' && s[0] <= 'z') {
+      c = getch();
+      t = getch();
+      if (c == ' ' && t == '=') { // Handle assignment (e.g., a =)
+        s[1] = c;
+        s[2] = '\0';
+        return ASSIGN;
+      } else {
+        ungetch(c); // Not an assignment, push the character back
+        ungetch(t); // Not an assignment, push the character back
+        return VAR;
+      }
+    }
+
     return MATHOP;
+  }
+
+  // Check if it's a command to print the most recent value (e.g., "R")
+  if (c == 'R') {
+    return RESULT; // Return 'R' as the command to print the last value
   }
 
   // Check if it's a number or negative sign

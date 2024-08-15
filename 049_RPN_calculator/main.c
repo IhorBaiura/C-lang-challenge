@@ -7,6 +7,13 @@
  * <math.h> in Appendix B, Section 4.
  *
  */
+/*
+ *
+ * Exercise 4-6. Add commands for handling variables. (It’s easy to provide
+ * twenty-six variables with single-letter names.) Add a variable for the most
+ * recently printed value.
+ *
+ */
 
 #include <stdio.h>
 #include <stdlib.h> /* for atof() */
@@ -14,11 +21,18 @@
 #define MAXOP 100  /* max size of operand or operator */
 #define NUMBER '0' /* signal that a number was found */
 #define MATHOP 'M' /* signal that a number was found */
+#define VAR 'V'
+#define ASSIGN 'A'
+#define RESULT 'R'
 
 int getop(char[]);
 void push(double);
 double pop(void);
 void mathfn(char s[]);
+void putv(char name, double value);
+double getv(char name);
+void addlv(double val);
+void printlv();
 
 /* reverse Polish calculator */
 int main(int argc, char *argv[]) {
@@ -28,13 +42,24 @@ int main(int argc, char *argv[]) {
   while ((type = getop(s)) != EOF) {
     switch (type) {
     case NUMBER:
+      printf("numb: %f\n", atof(s));
       push(atof(s));
       break;
     case MATHOP:
       mathfn(s);
       break;
+    case VAR:
+      push(getv(s[0]));
+      break;
+    case ASSIGN:
+      printf("assign: %c\n", s[0]);
+      putv(s[0], pop());
+      break;
     case '+':
       push(pop() + pop());
+      break;
+    case RESULT:
+      addlv(pop());
       break;
     case '*':
       push(pop() * pop());
@@ -58,7 +83,7 @@ int main(int argc, char *argv[]) {
         printf("error: zero divisor\n");
       break;
     case '\n':
-      printf("\t%.8g\n", pop());
+      printlv();
       break;
     default:
       printf("error: unknown command %s\n", s);

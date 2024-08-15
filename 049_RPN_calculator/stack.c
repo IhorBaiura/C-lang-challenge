@@ -31,7 +31,7 @@ double pop(void) {
   }
 }
 
-void printl(void) { printf("Last element of stack is %.8g", val[sp]); }
+void printl(void) { printf("Last element of stack is %.8g\n", val[sp]); }
 
 void duplicatel(void) {
   if (sp < MAXVAL) {
