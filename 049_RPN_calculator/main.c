@@ -3,6 +3,9 @@
  * Exercise 4-3. Given the basic framework, it’s straightforward to extend the
  * calculator. Add the modulus (%) operator and provisions for negative numbers.
  *
+ * Exercise 4-5. Add access to library functions like sin, exp, and pow. See
+ * <math.h> in Appendix B, Section 4.
+ *
  */
 
 #include <stdio.h>
