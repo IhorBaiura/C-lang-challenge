@@ -10,10 +10,12 @@
 
 #define MAXOP 100  /* max size of operand or operator */
 #define NUMBER '0' /* signal that a number was found */
+#define MATHOP 'M' /* signal that a number was found */
 
 int getop(char[]);
 void push(double);
 double pop(void);
+void mathfn(char s[]);
 
 /* reverse Polish calculator */
 int main(int argc, char *argv[]) {
@@ -24,6 +26,9 @@ int main(int argc, char *argv[]) {
     switch (type) {
     case NUMBER:
       push(atof(s));
+      break;
+    case MATHOP:
+      mathfn(s);
       break;
     case '+':
       push(pop() + pop());
