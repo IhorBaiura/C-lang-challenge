@@ -48,16 +48,20 @@ int getop(char s[]) {
     // Check if it's a single-letter variable
     if (strlen(s) == 1 && s[0] >= 'a' && s[0] <= 'z') {
       c = getch();
-      t = getch();
-      if (c == ' ' && t == '=') { // Handle assignment (e.g., a =)
-        s[1] = c;
-        s[2] = '\0';
-        return ASSIGN;
-      } else {
-        ungetch(c); // Not an assignment, push the character back
-        ungetch(t); // Not an assignment, push the character back
+
+      if (c == ' ') {
+        c = getch();
+        if (c == '=') { // Handle assignment (e.g., a =)
+          s[1] = c;
+          s[2] = '\0';
+          return ASSIGN;
+        }
+        ungetch(c);
         return VAR;
       }
+
+      ungetch(c);
+      return VAR;
     }
 
     return MATHOP;
