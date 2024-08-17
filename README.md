@@ -1,3 +1,3 @@
 # C-lang
 
-My exercises in C, computer science (algorithms and data structurs), mathematics and ML in the C language
+C&R C lang exercises, computer science (algorithms and data structures), mathematics and ML in the C language
