@@ -7,6 +7,10 @@
  * Exercise 4-8. Suppose that there will never be more than one character of
  * pushback. Modify getch and ungetch accordingly.
  *
+ * Exercise 4-9. Our getch and ungetch do not handle a pushed-back EOF
+ * correctly. Decide what their properties ought to be if an EOF is pushed back,
+ * then implement your design.
+ *
  */
 
 #include <stdio.h>
@@ -17,17 +21,28 @@ int bufp = 0; /* next free position in buf */
 
 int getch(void) /* get a (possibly pushed back) character */
 {
-  if (bufp > 0) {
+  if (bufp) {
     bufp = 0;
     return buf;
   }
 
-  return getchar();
+  int c = getch();
+
+  if (c == EOF) {
+    bufp = 1;
+    buf = c;
+  }
+
+  return c;
 }
 
 void ungetch(int c) /* push character back on input */
 {
-  if (bufp > 0)
+  if (c != EOF) {
+    return;
+  }
+
+  if (bufp)
     printf("ungetch: too many characters\n");
   else {
     buf = c;
