@@ -22,6 +22,7 @@
 #define ASSIGN 'A'
 #define RESULT 'R'
 #define CLEAR 'C'
+#define NEWLINE 'N'
 
 int getop(char[]);
 void push(double);
@@ -58,8 +59,8 @@ int main(int argc, char *argv[]) {
       push(pop() + pop());
       break;
     case RESULT:
-      printf("RESULT\n");
       addlv(pop());
+      printf("RESULT\n");
       break;
     case CLEAR:
       printf("CLEAR\n");
