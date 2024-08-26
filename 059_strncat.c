@@ -2,13 +2,13 @@
 #include <string.h>
 
 // Function prototype for strncat
-void my_strncat(char *s, const char *t, size_t n);
+void my_strncat_refactor(char *s, const char *t, size_t n);
 
 void test_strncat(char *s, const char *t, size_t n, const char *expected) {
   char buffer[100];                  // Buffer to hold the result of strncat
   memset(buffer, 0, sizeof(buffer)); // Initialize buffer with null characters
   strncpy(buffer, s, strlen(s));     // Copy the initial value of s to buffer
-  my_strncat(buffer, t, n);          // Perform the concatenation
+  my_strncat_refactor(buffer, t, n); // Perform the concatenation
 
   // Compare the result with the expected output
   if (strcmp(buffer, expected) == 0) {
@@ -43,4 +43,29 @@ void my_strncat(char *s, const char *t, size_t n) {
   while (n-- > 0) {
     *s++ = '\0';
   }
+}
+
+void my_strncat_refactor(char *s, const char *t, size_t n) {
+  void my_strncpy(char *s, const char *t, size_t n);
+  int my_strlen(const char *s);
+
+  my_strncpy(s + my_strlen(s), t, n);
+}
+
+void my_strncpy(char *s, const char *t, size_t n) {
+  for (; *t && n > 0; n--)
+    *s++ = *t++;
+
+  while (n-- > 0) {
+    *s++ = '\0';
+  }
+}
+
+int my_strlen(const char *s) {
+  const char *s0 = s;
+
+  while (*s)
+    s++;
+
+  return s - s0;
 }
