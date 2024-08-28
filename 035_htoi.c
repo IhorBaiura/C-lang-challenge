@@ -9,43 +9,65 @@
 
 #include <stdio.h>
 
-#define IS_HEX 1
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define WHITE "\033[37m"
 
-long int htoi(char[]);
+long int htoi(char *);
+
+void test_htoi(char *s, int expected) {
+  int result = htoi(s);
+
+  if (result == expected) {
+    printf(GREEN);
+    printf("PASS: htoi(\"%s\") -> %d\n", s, result);
+  } else {
+    printf(RED);
+    printf("FAIL: htoi(\"%s\") -> %d (Expected: %d)\n", s, result, expected);
+  }
+  printf(WHITE);
+}
 
 int main(int argc, char *argv[]) {
-  char str[] = "0x1A3F";
-  char str1[] = "0X4B2E";
-  char str2[] = "7C9D";
-
-  printf("hex: %s -> %ld\n", str, htoi(str));
-  printf("hex: %s -> %ld\n", str1, htoi(str1));
-  printf("hex: %s -> %ld\n", str2, htoi(str2));
+  test_htoi("1A", 26);
+  test_htoi("0x1A", 26);
+  test_htoi("0X1A", 26);
+  test_htoi("a9", 169);
+  test_htoi("AbC", 2748);
+  test_htoi("00001A", 26);
+  test_htoi("7", 7);
+  test_htoi("0x7", 7);
+  test_htoi("", 0);
+  test_htoi("0x1G", -1);
+  test_htoi("0x", 0);
 
   return 0;
 }
 
-long _strlen(char str[]);
+long _strlen(char *str);
 char _ishexdigit(char c);
 int _charhextodecimal(char c);
 long _pow(int x, int pow);
 
-long htoi(char str[]) {
-  int i, pos, beginnig;
-  long res, len;
+long htoi(char *s) {
+  char *s0 = s;
+  char *sl;
+  long res = 0;
 
-  beginnig = 0;
-  res = 0L;
-  len = _strlen(str) - 1;
+  if (*s == '0' && (*(s + 1) == 'x' || *(s + 1) == 'X')) {
+    s += 2;
+    s0 = s;
+  }
 
-  if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X'))
-    beginnig = 2;
+  while (*s)
+    s++;
+  sl = --s;
 
-  for (i = len; i >= beginnig; i--) {
-    if (!_ishexdigit(str[i]))
+  for (; s - s0 >= 0; s--) {
+    if (!_ishexdigit(*s))
       return -1;
 
-    res += _pow(16, len - i) * _charhextodecimal(str[i]);
+    res += _pow(16, sl - s) * _charhextodecimal(*s);
   }
 
   return res;
@@ -58,11 +80,11 @@ char _ishexdigit(char c) {
              : 0;
 }
 
-long _strlen(char str[]) {
-  long i;
+long _strlen(char *s) {
+  long i = 0;
 
-  for (i = 0; str[i] != '\0' && str[i] != EOF; i++)
-    ;
+  while (*s != '\0' && *s++ != EOF)
+    i++;
 
   return i;
 }
