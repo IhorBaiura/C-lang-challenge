@@ -14,11 +14,12 @@
 #define WHITE "\033[37m"
 
 void reverse(char s[]);
+void reverse_p(char *s);
 
 void test_reverse(char original[], const char expected[]) {
   char input[100], res; // Buffer to store the original input for display
   strncpy(input, original, 100);
-  reverse(input);
+  reverse_p(input);
   res = strcmp(input, expected) == 0;
   printf("%sInput: \"%s\" | Reversed: \"%s\" | Expected: \"%s\" | %s%s\n",
          res ? GREEN : RED, original, input, expected, res ? "PASS" : "FAIL",
@@ -38,6 +39,21 @@ int main() {
   test_reverse("AbCdEfGh", "hGfEdCbA");
 
   return 0;
+}
+
+void reverse_p(char *s) {
+  char c;
+  char *s0 = s;
+
+  while (*s)
+    s++;
+
+  --s;
+  while (s > s0) {
+    c = *s;
+    *s-- = *s0;
+    *s0++ = c;
+  }
 }
 
 void reverse(char s[]) {
