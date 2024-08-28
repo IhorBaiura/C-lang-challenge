@@ -75,15 +75,18 @@ int main() {
   return 0;
 }
 
-void reverse(char s[]) {
-  int i, j, c;
+void reverse(char *s) {
+  int c;
+  char *s0 = s;
 
-  for (i = 0; s[i] != '\0' && s[i] != '\n'; i++)
-    ;
-  for (j = 0, --i; j <= (i / 2); j++) {
-    c = s[j];
-    s[j] = s[i - j];
-    s[i - j] = c;
+  while (*s)
+    s++;
+
+  --s;
+  while (s - s0 > 0) {
+    c = *s;
+    *s-- = *s0;
+    *s0++ = c;
   }
 }
 
@@ -112,38 +115,36 @@ void itoa(int n, char s[]) {
   reverse(s);
 }
 
-void itoa_imp(int n, char s[]) {
-  int i, sign;
+void itoa_imp(int n, char *s) {
+  int sign = n;
+  char *s0 = s;
 
-  sign = n;
-  i = 0;
   do {
-    s[i++] = abs(n % 10) + '0';
+    *s++ = abs(n % 10) + '0';
   } while ((n /= 10) != 0);
 
   if (sign < 0)
-    s[i++] = '-';
-  s[i] = '\0';
+    *s++ = '-';
+  *s = '\0';
 
-  reverse(s);
+  reverse(s0);
 }
 
-void itoa_ext(int n, char s[], int min_width) {
-  int i, sign;
+void itoa_ext(int n, char *s, int min_width) {
+  int sign = n;
+  char *s0 = s;
 
-  sign = n;
-  i = 0;
   do {
-    s[i++] = abs(n % 10) + '0';
+    *s++ = abs(n % 10) + '0';
   } while ((n /= 10) != 0);
 
   if (sign < 0)
-    s[i++] = '-';
+    *s++ = '-';
 
-  while ((i + 1) <= min_width)
-    s[i++] = ' ';
+  while (s - s0 < min_width)
+    *s++ = ' ';
 
-  s[i] = '\0';
+  *s = '\0';
 
-  reverse(s);
+  reverse(s0);
 }
