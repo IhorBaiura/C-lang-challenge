@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 /*
  *
  * Exercise 4-1. Write the function strrindex(s,t), which returns the position
@@ -6,14 +8,34 @@
  */
 
 int strrindex(char *s, char *t) {
-  int i, j, k;
-  int last = -1;
+  char *s0 = s;
+  char *t0 = t;
 
-  for (i = 0; s[i] != '\0'; i++) {
-    for (j = i, k = 0; t[k] != '\0' && s[j] == t[k]; j++, k++)
-      ;
-    if (k > 0 && t[k] == '\0')
-      last = i;
+  while (*s)
+    s++;
+  --s;
+  char *sl = s;
+
+  while (*t)
+    t++;
+  --t;
+  char *tl = t;
+
+  while (sl > s0) {
+    s = sl;
+    t = tl;
+
+    while (t >= t0 && *s == *t) {
+      if (t == t0 && *s == *t) {
+        return s - s0;
+      }
+
+      t--;
+      s--;
+    }
+
+    sl--;
   }
-  return last;
+
+  return -1;
 }

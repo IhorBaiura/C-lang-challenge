@@ -35,16 +35,16 @@ int main() {
   run_test_strindex("hi", "hello", -1);
 
   printf("\n\n-----\t\t\t strrindex \t\t\t-----\n");
-  /* run_test_strrindex("hello world", "world", 6); */
-  /* run_test_strrindex("hello world", "hello", 0); */
-  /* run_test_strrindex("abcabcabc", "abc", 6); */
-  /* run_test_strrindex("hello world", "o", 7); */
-  /* run_test_strrindex("hello world", "goodbye", -1); */
-  /* run_test_strrindex("hello world", "", -1); */
-  /* run_test_strrindex("", "hello", -1); */
-  /* run_test_strrindex("", "", -1); */
-  /* run_test_strrindex("this is a test", "test", 10); */
-  /* run_test_strrindex("hi", "hello", -1); */
+  run_test_strrindex("hello world", "world", 6);
+  run_test_strrindex("hello world", "hello", 0);
+  run_test_strrindex("abcabcabc", "abc", 6);
+  run_test_strrindex("hello world", "o", 7);
+  run_test_strrindex("hello world", "goodbye", -1);
+  run_test_strrindex("hello world", "", -1);
+  run_test_strrindex("", "hello", -1);
+  run_test_strrindex("", "", -1);
+  run_test_strrindex("this is a test", "test", 10);
+  run_test_strrindex("hi", "hello", -1);
 
   return 0;
 }
