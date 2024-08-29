@@ -5,7 +5,7 @@
  *
  */
 
-int strrindex(char s[], char t[]) {
+int strrindex(char *s, char *t) {
   int i, j, k;
   int last = -1;
 
