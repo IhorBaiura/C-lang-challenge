@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 /*
  *
  * Exercise 4-1. Write the function strrindex(s,t), which returns the position
