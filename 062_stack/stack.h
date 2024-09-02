@@ -1,10 +1,11 @@
 #define DEPTH 8
 
-typedef int Date;
+typedef int Data;
 typedef struct {
-  Date a[DEPTH];
+  Data a[DEPTH];
   unsigned int n;
 } Stack;
 
 void print(Stack *st);
 void init(Stack *st);
+void push(Stack *st, Data d);
