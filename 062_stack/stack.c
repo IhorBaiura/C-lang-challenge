@@ -1,8 +1,10 @@
 #include "stack.h"
 #include <stdio.h>
 
-void print(Stack *sp) {
-  for (unsigned int i = 0; i < sp->n; i++)
-    printf("%d ", sp->a[i]);
+void print(Stack *st) {
+  for (unsigned int i = 0; i < st->n; i++)
+    printf("%d ", st->a[i]);
   printf("\n");
 }
+
+void init(Stack *st) { st->n = 0; }

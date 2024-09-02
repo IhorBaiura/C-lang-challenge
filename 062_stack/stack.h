@@ -7,3 +7,4 @@ typedef struct {
 } Stack;
 
 void print(Stack *st);
+void init(Stack *st);
