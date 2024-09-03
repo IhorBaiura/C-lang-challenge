@@ -10,3 +10,5 @@ void print(Stack *st) {
 void init(Stack *st) { st->n = 0; }
 
 void push(Stack *st, Data d) { st->a[st->n++] = d; }
+
+Data pop(Stack *st) { return st->a[st->n-- - 1]; }
