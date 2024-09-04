@@ -7,6 +7,7 @@ int main() {
 
   init(st);
   print(st);
+  printf("Stack is empty: %s\n", is_empty(st) ? "Yes" : "No"); // Yes
 
   push(st, -5);
   print(st);
@@ -22,6 +23,8 @@ int main() {
 
   push(st, 110);
   print(st);
+
+  printf("Stack is empty: %s\n", is_empty(st) ? "Yes" : "No"); // No
 
   Data d;
   d = pop(st);
@@ -43,6 +46,8 @@ int main() {
   d = pop(st);
   printf("pop data: %d\n", d); // -5
   print(st);                   //
+
+  printf("Stack is empty: %s\n", is_empty(st) ? "Yes" : "No"); // Yes
 
   return 0;
 }

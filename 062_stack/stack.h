@@ -10,3 +10,4 @@ void print(Stack *st);
 void init(Stack *st);
 void push(Stack *st, Data d);
 Data pop(Stack *st);
+int is_empty(Stack *st);
