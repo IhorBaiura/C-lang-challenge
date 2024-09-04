@@ -49,5 +49,18 @@ int main() {
 
   printf("Stack is empty: %s\n", is_empty(st) ? "Yes" : "No"); // Yes
 
+  printf("Stack is full: %s\n", is_full(st) ? "Yes" : "No"); // No
+  push(st, 110);
+  push(st, 110);
+  push(st, 110);
+  push(st, 110);
+  push(st, 110);
+  push(st, 110);
+  push(st, 110);
+  push(st, 110);
+  print(st);
+  printf("Stack is empty: %s\n", is_empty(st) ? "Yes" : "No"); // No
+  printf("Stack is full: %s\n", is_full(st) ? "Yes" : "No");   // Yes
+
   return 0;
 }

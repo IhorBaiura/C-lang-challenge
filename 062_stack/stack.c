@@ -14,3 +14,5 @@ void push(Stack *st, Data d) { st->a[st->n++] = d; }
 Data pop(Stack *st) { return st->a[st->n-- - 1]; }
 
 int is_empty(Stack *st) { return st->n == 0; }
+
+int is_full(Stack *st) { return st->n >= DEPTH; }
