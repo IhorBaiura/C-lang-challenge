@@ -1,4 +1,4 @@
-#define DEPTH 8
+#define DEPTH 5
 
 typedef int Data;
 typedef struct {
