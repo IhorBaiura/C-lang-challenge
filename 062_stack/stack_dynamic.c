@@ -2,6 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+Stack *create() {
+  Stack *st = malloc(sizeof(Stack));
+  init(st);
+  return st;
+}
+
 void print(Stack *st) {
   printf("Stack: ");
   for (unsigned int i = 0; i < st->n; i++)

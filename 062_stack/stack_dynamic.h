@@ -8,6 +8,7 @@ typedef struct {
   size_t size;
 } Stack;
 
+Stack *create();
 void print(Stack *st);
 void init(Stack *st);
 void push(Stack *st, Data d);

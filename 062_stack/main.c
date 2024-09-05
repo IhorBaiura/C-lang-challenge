@@ -6,10 +6,8 @@
 
 int main() {
   Data td[DEPTH] = {-5, 1, 15, 22, 110};
-  Stack s;
-  Stack *st = &s;
+  Stack *st = create();
 
-  init(st);
   print(st);
   printf("Stack is empty: %s\n", is_empty(st) ? "Yes" : "No"); // Yes
   printf("Stack is full: %s\n", is_full(st) ? "Yes" : "No");   // No
