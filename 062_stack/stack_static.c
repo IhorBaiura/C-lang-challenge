@@ -1,4 +1,4 @@
-#include "stack.h"
+#include "stack_static.h"
 #include <stdio.h>
 
 void print(Stack *st) {
