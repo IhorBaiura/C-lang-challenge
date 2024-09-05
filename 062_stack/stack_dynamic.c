@@ -36,3 +36,8 @@ Data pop(Stack *st) {
 int is_empty(Stack *st) { return st->n == 0; }
 
 int is_full(Stack *st) { return st->n >= st->size; }
+
+void destroy(Stack *st) {
+  free(st->a);
+  init(st);
+}

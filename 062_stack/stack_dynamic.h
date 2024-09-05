@@ -14,3 +14,4 @@ void push(Stack *st, Data d);
 Data pop(Stack *st);
 int is_empty(Stack *st);
 int is_full(Stack *st);
+void destroy(Stack *st);

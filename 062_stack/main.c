@@ -1,5 +1,8 @@
-#include "stack_static.h"
+/* #include "stack_static.h" */
+#include "stack_dynamic.h"
 #include <stdio.h>
+
+#define DEPTH 5
 
 int main() {
   Data td[DEPTH] = {-5, 1, 15, 22, 110};
@@ -29,6 +32,8 @@ int main() {
 
   printf("Stack is empty: %s\n", is_empty(st) ? "Yes" : "No"); // Yes
   printf("Stack is full: %s\n", is_full(st) ? "Yes" : "No");   // No
+
+  destroy(st);
 
   return 0;
 }
