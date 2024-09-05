@@ -45,5 +45,5 @@ int is_full(Stack *st) { return st->n >= st->size; }
 
 void destroy(Stack *st) {
   free(st->a);
-  init(st);
+  free(st);
 }
