@@ -1,5 +1,6 @@
 /* #include "stack_static.h" */
-#include "stack_dynamic.h"
+/* #include "stack_dynamic.h" */
+#include "stack_improved.h"
 #include <stdio.h>
 
 #define DEPTH 5
@@ -14,7 +15,7 @@ int main() {
 
   for (int i = 0; i < DEPTH; i++) {
     printf("Push to stack: %d\n", td[i]);
-    push(st, td[i]);
+    push(&st, td[i]);
     print(st);
   }
 
