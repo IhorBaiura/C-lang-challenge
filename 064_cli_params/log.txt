@@ -1,0 +1,5 @@
+INFO: Server started
+ERROR: Failed to load module
+INFO: Module loaded successfully
+ERROR: Timeout while connecting
+INFO: Shutting down
