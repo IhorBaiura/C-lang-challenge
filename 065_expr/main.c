@@ -14,10 +14,10 @@
 int main(int argc, char *argv[]) {
   Stack *stack = create();
 
-  /* while (--argc) */
-  /*   switch ((*++argv)[]) { */
-  /*     case isNum() */
-  /*   } */
+  while (--argc)
+    switch ((*++argv)[]) {
+      case isNum()
+    }
 
   return 0;
 }
