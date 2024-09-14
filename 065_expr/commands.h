@@ -1,5 +1,11 @@
 #include "stack.h"
 
+#define RESULT "res"
+#define PLUS "+"
+#define MINUS "-"
+
+void result(Stack *st);
+void apply_command(Stack *st, char *c);
 void add(Stack *stack);
 void subtract(Stack *stack);
 void multiply(Stack *stack);

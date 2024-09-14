@@ -9,15 +9,20 @@
  * evaluates 2 × (3+4).
  *
  */
-#include "stack.h"
+#include "commands.h"
+#include <ctype.h>
+#include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-  Stack *stack = create();
+  Stack *st = create();
 
   while (--argc)
-    switch ((*++argv)[]) {
-      case isNum()
-    }
+    if (isdigit(**++argv))
+      push(st, atoi(*argv));
+    else if (isalpha(**argv))
+      apply_command(st, *argv);
+
+  result(st);
 
   return 0;
 }
