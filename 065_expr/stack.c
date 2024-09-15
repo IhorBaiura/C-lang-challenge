@@ -11,9 +11,16 @@ Stack *create() {
   return stack;
 }
 
+void print(Stack *st) {
+  printf("Stack: ");
+  for (unsigned int i = 0; i < st->n; i++)
+    printf("%d ", st->a[i]);
+  printf("\n");
+}
+
 Data pop(Stack *st) {
   if (is_empty(st)) {
-    printf("Stack is empty");
+    printf("Stack is empty\n");
     return 0;
   }
 
@@ -27,9 +34,10 @@ void push(Stack *st, Data d) {
   }
 
   st->a[st->n++] = d;
+  print(st);
 }
 
-bool is_empty(Stack *st) { return st->n; }
+bool is_empty(Stack *st) { return st->n == 0; }
 
 bool is_full(Stack *st) { return st->n >= st->size; }
 

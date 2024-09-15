@@ -3,35 +3,35 @@
 #include <stdio.h>
 
 void apply_command(Stack *st, char *c) {
-  if (strcmp(c, RESULT))
+  if (!strcmp(c, RESULT))
     result(st);
-  else if (strcmp(c, "+"))
+  else if (!strcmp(c, "+"))
     add(st);
-  else if (strcmp(c, "-"))
+  else if (!strcmp(c, "-"))
     subtract(st);
-  else if (strcmp(c, "*"))
+  else if (!strcmp(c, "*"))
     multiply(st);
-  else if (strcmp(c, "/"))
+  else if (!strcmp(c, "/"))
     divide(st);
-  else if (strcmp(c, "sin"))
+  else if (!strcmp(c, "sin"))
     sin_c(st);
-  else if (strcmp(c, "cos"))
+  else if (!strcmp(c, "cos"))
     cos_c(st);
-  else if (strcmp(c, "tg"))
+  else if (!strcmp(c, "tg"))
     tg_c(st);
-  else if (strcmp(c, "ctg"))
+  else if (!strcmp(c, "ctg"))
     ctg_c(st);
-  else if (strcmp(c, "pow"))
+  else if (!strcmp(c, "pow"))
     pow_c(st);
-  else if (strcmp(c, "mod"))
+  else if (!strcmp(c, "mod"))
     mod_c(st);
   else
-    printf("Unexpected command!");
+    printf("Unexpected command!\n");
 }
 
 void result(Stack *st) {
   // TODO Define the format specifier based on the data type
-  printf("Result of calculation: %d", pop(st));
+  printf("Result of calculation: %d\n", pop(st));
 }
 
 void add(Stack *st) { push(st, pop(st) + pop(st)); }

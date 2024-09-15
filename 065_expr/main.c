@@ -11,16 +11,18 @@
  */
 #include "commands.h"
 #include <ctype.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
   Stack *st = create();
 
-  while (--argc)
+  while (--argc) {
     if (isdigit(**++argv))
       push(st, atoi(*argv));
-    else if (isalpha(**argv))
+    else
       apply_command(st, *argv);
+  }
 
   result(st);
 
