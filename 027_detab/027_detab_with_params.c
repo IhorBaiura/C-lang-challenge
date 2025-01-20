@@ -7,19 +7,35 @@
  * Example:
  * Input String:  "pie\tcows\tand\tapple"
  * Output String: "pie*****cows****and*****apple"
+ *
+ * Exercise 5-11. Modify the programs entab and detab (written as exercises in
+ * Chapter 1) to accept a list of tab stops as arguments. Use the default tab
+ * settings if  there are no arguments.
+ *
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define MAXLINE 1000
 #define TAB 8
+#define TABSTOP_LIMIT 100
 #define TAB_MAARK '*'
 
 int get_line(char s[], int lim);
 void detab(char s[], int lim);
 
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
   char line[MAXLINE];
+  int tabstops[TABSTOP_LIMIT] = {0};
+
+  if (--argc > TABSTOP_LIMIT)
+    printf("WARNING! Number of tubstops is more than limin: %d", TABSTOP_LIMIT);
+
+  for (int i = 0; i < argc; i++) {
+    tabstops[i] = atoi(*++argv);
+    printf("item: %d \n", tabstops[i]);
+  }
 
   while (get_line(line, MAXLINE) > 0) {
     detab(line, MAXLINE);
